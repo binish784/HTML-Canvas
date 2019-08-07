@@ -18,4 +18,10 @@ class Display{
 		this.ctx.fillRect(Math.floor(x),Math.floor(y),width,height);
 	}
 
+	showText(text){
+		this.ctx.fillStyle="white";
+		this.ctx.font="8px Comic Sans MS"
+		this.ctx.fillText(text,240,145);
+	}
+
 }

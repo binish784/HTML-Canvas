@@ -57,8 +57,17 @@ function renderPlayer(){
 	display.drawRectangle(player.x,player.y,player.width,player.height,player.color);
 }
 
+function renderHealth(){
+	if(player.health>0){
+		display.showText("Health : " + player.health);		
+	}else{
+		display.showText("Player Dead");			
+	}
+}
+
 var render=function(){
 	display.fill(game.world.background_color);
+	renderHealth();
 	renderBombs();
 	if(game.world.fires.length>0){
 		renderFires();

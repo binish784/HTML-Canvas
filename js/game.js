@@ -71,7 +71,11 @@ class Game{
 				});
 				this.fires.push(fire);
 				this.groundEnemies=this.groundEnemies.filter(function(enemy,index){
-					return  !((enemy.x<=(fire.x+fire.width) && enemy.x>=fire.x) &&(enemy.y<=(fire.y+fire.height) && enemy.y>=fire.y))
+					return  !((
+						(enemy.x+enemy.width)>=(fire.x) && 
+						(enemy.x<=fire.x+fire.width) &&
+						(enemy.y+enemy.height)>=(fire.y) &&
+						(enemy.y<=fire.y+fire.height)))
 				})
 			},
 

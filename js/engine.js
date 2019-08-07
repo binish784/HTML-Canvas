@@ -12,6 +12,7 @@ class Engine{
 	}
 
 	handleRun(){
+		//each frame run
 		this.accumulated_time+=(this.frame_rate-this.time);
 		this.time=this.time-this.frame_rate;
 		if(this.accumulated_time>=this.frame_rate*3){

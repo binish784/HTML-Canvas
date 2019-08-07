@@ -1,3 +1,4 @@
+
 class Game{
 	constructor(){
 		this.world={
@@ -39,7 +40,7 @@ class Game{
 				if(((bullet.y>this.player.y) && bullet.y<(this.player.y+this.player.height)) && (bullet.x<=(this.player.x+this.player.width) && (bullet.x>=this.player.x))) {
 					this.removeBullet(bullet);
 					this.player.bulletDamage();
-					console.log("Health : " + player.health);
+					console.log("Health : " + this.player.health);
 				}
 			},
 
@@ -70,7 +71,6 @@ class Game{
 				});
 				this.fires.push(fire);
 				this.groundEnemies=this.groundEnemies.filter(function(enemy,index){
-					//fix
 					return  !((enemy.x<=(fire.x+fire.width) && enemy.x>=fire.x) &&(enemy.y<=(fire.y+fire.height) && enemy.y>=fire.y))
 				})
 			},

@@ -10,13 +10,64 @@ var player=game.world.player;
 
 var controller = new Controller();
 
-var render=function(){
-	display.fill(game.world.background_color);
+function renderBombs(){
 	game.world.bombs.forEach(function(bomb,index){
 		display.drawRectangle(bomb.x,bomb.y,bomb.width,bomb.height,bomb.color);
+		bomb.bombTick();
+		if(bomb.timer==0){
+			console.log("Explosion");
+			this.game.world.explodeBomb(bomb);
+		}
 	})
+}
+
+function renderFires(){
+	game.world.fires.forEach(function(fire,index){
+		display.drawRectangle(fire.x,fire.y,fire.width,fire.height,fire.color);
+		fire.fireTick();
+		if(fire.timer==0){
+			console.log("Exhaust Fire " +index);
+			this.game.world.removeFire(index);
+		}
+	})
+}
+
+
+function renderBullets(){
+	// console.log(game.world.bullets.length);
+	game.world.bullets.forEach(function(bullet,index){
+		// console.log(bullet);
+		display.drawRectangle(bullet.x,bullet.y,bullet.width,bullet.height,bullet.color);
+	})
+}
+
+function renderAirEnemies(){
+	game.world.airEnemies.forEach(function(enemy,index){
+		display.drawRectangle(enemy.x,enemy.y,enemy.width,enemy.height,enemy.color);
+	})
+}
+
+function renderGroundEnemies(){
+	game.world.groundEnemies.forEach(function(enemy,index){
+		display.drawRectangle(enemy.x,enemy.y,enemy.width,enemy.height,enemy.color);
+	})
+}
+
+function renderPlayer(){
 	display.drawRectangle(player.x,player.y,player.width,player.height,player.color);
-	console.log(player.x,player.y);
+}
+
+var render=function(){
+	display.fill(game.world.background_color);
+	renderBombs();
+	if(game.world.fires.length>0){
+		renderFires();
+	}
+	renderBullets();
+	renderAirEnemies();
+	renderGroundEnemies();
+	renderPlayer();
+	// console.log(player.x,player.y);
 }
 
 var update=function(){

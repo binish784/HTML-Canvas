@@ -3,8 +3,6 @@ class Display{
 		this.canvas=canvas;
 		this.canvas.style.height="600px";
 		this.canvas.style.width="600px";
-		// this.canvas.style.height=(document.documentElement.clientHeight-50) +"px";
-		// this.canvas.style.width=(document.documentElement.clientWidth-50)+"px";
 		this.canvas.style.backgroundColor="black";
 		this.ctx=this.canvas.getContext("2d");
 		console.log("Display Initialized");

@@ -12,8 +12,14 @@ class Controller{
 		var down=false;
 		if(event.type=='keydown'){
 			down=true;
-			if(event.keyCode==32){game.world.plantBomb(game.world.player.x,game.world.player.y);}
+			if(event.keyCode==32){
+				game.world.plantBomb(game.world.player.x,game.world.player.y);
+			}else if(event.keyCode==90){
+				game.world.player.shootBullet();
+			}
+		
 		}
+
 		switch(event.keyCode){
 			case 37:this.left.getInput(down);break;
 			case 38:this.up.getInput(down);break;

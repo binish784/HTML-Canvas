@@ -1,8 +1,8 @@
 class Display{
 	constructor(canvas){
 		this.canvas=canvas;
-		this.canvas.style.height="600px";
-		this.canvas.style.width="600px";
+		// this.canvas.style.height="600px";
+		// this.canvas.style.width="600px";
 		this.canvas.style.backgroundColor="black";
 		this.ctx=this.canvas.getContext("2d");
 		console.log("Display Initialized");
@@ -20,8 +20,8 @@ class Display{
 
 	showText(text){
 		this.ctx.fillStyle="white";
-		this.ctx.font="8px Comic Sans MS"
-		this.ctx.fillText(text,240,145);
+		this.ctx.font="20px Comic Sans MS"
+		this.ctx.fillText(text,450,580);
 	}
 
 }

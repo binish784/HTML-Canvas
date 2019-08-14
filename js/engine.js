@@ -1,44 +1,51 @@
 class Engine{
-	constructor(frame_rate,render,update){
-		this.frame_rate=frame_rate;
-		this.accumulated_time=0;
-		this.animator=undefined;
-		this.render=render;
-		this.update=update;
-		this.time=undefined;
-		this.updated=true;
 
+	constructor(frame_rate,update,render){
+		this.frame_rate=frame_rate;
+		this.update=update;
+		this.render=render;
+		this.animator=undefined;
+		this.now_time=0;
+		this.last_time=0;
+		this.accumulated_time=0;
+		this.updated=false;
 		console.log("Engine Initialized");
 	}
 
-	handleRun(){
-		//each frame run
-		this.accumulated_time+=(this.frame_rate-this.time);
-		this.time=this.time-this.frame_rate;
+	run(){
+		this.now=this.getTimestamp();
+		this.accumulated_time+=(this.last_time-this.now_time);
 		if(this.accumulated_time>=this.frame_rate*3){
 			this.accumulated_time=this.frame_rate;
 		}
-
 		while(this.accumulated_time>=this.frame_rate){
 			this.accumulated_time-=this.frame_rate;
 			this.update();
 			this.updated=true;
 		}
-		
 		if(this.updated){
-			this.updated=false;
 			this.render();
+			this.updated=false;
 		}
 		this.animator=window.requestAnimationFrame(function(){
-			this.handleRun();
+			this.run();
 		}.bind(this));
+		this.last_time=this.now;	
+	}
+
+
+	getTimestamp(){
+		if(window.performance && window.performance.now()){
+			return window.performance.now();
+		}else{
+			return new Date().getTime();
+		}
 	}
 
 	start(){
-		this.accumulated_time=this.frame_rate;
-		this.time=window.performance.now();
+		this.last_time=this.getTimestamp();
 		this.animator=window.requestAnimationFrame(function(){
-			this.handleRun();
+			this.run();
 		}.bind(this));
 	}
 

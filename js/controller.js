@@ -14,9 +14,10 @@ class Controller{
 			down=true;
 			if(event.keyCode==32){
 				game.world.plantBomb(game.world.player.x,game.world.player.y);
-			}else if(event.keyCode==90){
-				game.world.player.shootBullet();
 			}
+			// else if(event.keyCode==90){
+			// 	game.world.player.shootBullet();
+			// }
 		
 		}
 
@@ -25,7 +26,8 @@ class Controller{
 			case 38:this.up.getInput(down);break;
 			case 39:this.right.getInput(down);break;
 			case 40:this.down.getInput(down);break;
-		}
+			case 90:game.world.player.shootBullet();break;	
+		 }
 		// console.log(event.keyCode  + " Pressed");
 	};
 

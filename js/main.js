@@ -10,6 +10,8 @@ var player=game.world.player;
 
 var controller = new Controller();
 
+
+
 function renderBombs(){
 	game.world.bombs.forEach(function(bomb,index){
 		display.drawRectangle(bomb.x,bomb.y,bomb.width,bomb.height,bomb.color);

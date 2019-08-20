@@ -26,7 +26,7 @@ class Turrent{
 			this.ammo--;
 			//reset counter
 			if(this.ammo==0){
-				this.warm_counter=300;		
+				this.warm_counter=200;		
 				this.ammo=5;
 			}else{
 				this.warm_counter=this.GUN_WARM;	

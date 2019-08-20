@@ -10,7 +10,12 @@ var player=game.world.player;
 
 var controller = new Controller();
 
-
+function startNewGame(){
+	display = new Display(canvas);
+	game= new Game();
+	player= game.world.player;
+	controller=new Controller();
+}
 
 function renderBombs(){
 	game.world.bombs.forEach(function(bomb,index){
@@ -47,6 +52,9 @@ function renderAirEnemies(){
 	game.world.airEnemies.forEach(function(enemy,index){
 		display.drawRectangle(enemy.x,enemy.y,enemy.width,enemy.height,enemy.color);
 	})
+	game.world.kamikaze.forEach(function(enemy,index){
+		display.drawRectangle(enemy.x,enemy.y,enemy.width,enemy.height,enemy.color);
+	})
 }
 
 function renderGroundEnemies(){
@@ -67,21 +75,32 @@ function renderHealth(){
 	}
 }
 
+function renderConsumables(){
+	game.world.consumables.forEach(function(item,index){
+		display.drawRectangle(item.x,item.y,item.width,item.height,item.color);
+	})
+}
+
 var render=function(){
 	display.fill(game.world.background_color);
 	renderHealth();
-	renderBombs();
 	if(game.world.fires.length>0){
 		renderFires();
 	}
 	renderBullets();
-	renderAirEnemies();
 	renderGroundEnemies();
+	renderBombs();
+	renderConsumables();
+	renderAirEnemies();
 	renderPlayer();
 	// console.log(player.x,player.y);
 }
 
 var update=function(){
+
+	if(game.world.player.health<=0){
+			display.deadScreen();	
+	}
 
 	if(controller.left.active){
 		player.moveLeft();

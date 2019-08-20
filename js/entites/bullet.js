@@ -1,10 +1,8 @@
-
 class Bullet{
-	constructor(x,y,direction,isTurrent){
+	constructor(x,y,direction,isTurrent,angle,doubleDamage){
 		this.x=x;
 		this.y=y;
-		this.x_velocity=8;
-		this.y_velocity=8;
+		this.speed=8;
 		if(isTurrent){
 			this.height=5;
 		}else{
@@ -12,23 +10,30 @@ class Bullet{
 		}
 		this.width=3;
 		this.isTurrent=isTurrent || false;
-		this.color="#FFFFFF";
+		this.angle=angle || 0;
+		this.color=(doubleDamage) ? "#63acff" : "#FFFFFF";
 		this.direction=direction;
+		this.doubleDamage=doubleDamage;
 	}
 	moveForward(){
 		if(this.direction){
-			this.y-=this.y_velocity;
+			this.y-=this.speed;
 		}else{
-			this.y+=this.y_velocity;
+			this.y+=this.speed;
 		}
 	}
-	moveSide(){
-		if(this.direction){
-			// console.log("Bullet moving right");
-			this.x+=this.x_velocity;
+	fromTurrent(){
+		if(this.isTurrent){
+			this.y += Math.sin(this.angle)*this.speed;
+		    this.x += Math.cos(this.angle)*this.speed;
+		}
+	}
+	damage(object){
+		if(this.doubleDamage){
+			console.log("Double damage");
+			object.health-=20;
 		}else{
-			// console.log("Bullet moving left");
-			this.x-=this.x_velocity;
+			object.health-=10;
 		}
 	}
 }

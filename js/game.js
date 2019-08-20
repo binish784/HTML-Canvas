@@ -5,12 +5,39 @@ class Game{
 			background_color:"rgb(0,0,0)",
 			height:600,
 			width:600,
-			player:new Player(350,500,"#00FF00",true),
-			airEnemies:new Array(new Player(50,10,"#DDEE11",false),new Player(500,150,"#DDEE11",false),new Player(200,50,"#DDEE11",false)),
-			groundEnemies:new Array(new turrent(20,90),new turrent(400,400)),
+			player:new Player(350,500),
+			kamikazeActive:true,
+			airEnemies:new Array(new Enemy(150,150),new Enemy(250,100),new Enemy(500,150)),
+			kamikaze:new Array(new Kamikaze(10,-1500),new Kamikaze(250,-1500),new Kamikaze(550,-1500)),
+			groundEnemies:new Array(new Turrent(50,50),new Turrent(450,150)),
+			consumables:new Array(),
 			bombs:new Array(),
 			fires:new Array(),
 			bullets:new Array(),
+				
+			collideKamikaze:function(){
+				this.kamikaze.forEach(function(enemy,index){
+					if((enemy.x+enemy.width>=player.x) && (enemy.x<=player.x+player.width) && (enemy.y+enemy.height>=player.y) && (enemy.y<=player.y+player.height)){
+						enemy.health=0;
+						player.y+=5;
+						player.kamikazeDamage();
+					}
+				})
+				this.kamikaze=this.kamikaze.filter(function(enemy,index){
+					return (enemy.health>0);
+				})
+			},
+
+			consumeItems:function(){
+				this.consumables.forEach(function(item,index){
+					if((item.x+item.width>=player.x) && (item.x<=player.x+player.width) && (item.y+item.height>=player.y) && (item.y<=player.y+player.height)){
+						item.consume(player);
+					}
+				})
+				this.consumables=this.consumables.filter(function(item,index){
+					return (!item.consumed);
+				})	
+			},
 
 			collideObject:function(object){
 				if(object.x<0){
@@ -26,29 +53,44 @@ class Game{
 			},
 
 			bulletCollision:function(bullet){
-				this.airEnemies.forEach(function(enemy,index){
-					if((bullet.y<(enemy.y+enemy.height)&&(bullet.y>enemy.y)) && ((bullet.x<=(enemy.x+enemy.width) && (bullet.x>=enemy.x)))){
-						this.removeBullet(bullet);
-						enemy.bulletDamage();
-					}
-				}.bind(this));
+				if(bullet.direction){
+					this.airEnemies.forEach(function(enemy,index){
+							if((bullet.y<(enemy.y+enemy.height)&&(bullet.y>enemy.y)) && ((bullet.x<=(enemy.x+enemy.width) && (bullet.x>=enemy.x)))){
+								this.removeBullet(bullet);
+								bullet.damage(enemy);
+								enemy.bulletDamage();
+							}
+					}.bind(this));
+					this.kamikaze.forEach(function(enemy,index){
+						if((bullet.y<(enemy.y+enemy.height)&&(bullet.y>enemy.y)) && ((bullet.x<=(enemy.x+enemy.width) && (bullet.x>=enemy.x)))){
+							this.removeBullet(bullet);
+							bullet.damage(enemy);
+							enemy.bulletDamage();
+						}
+					}.bind(this));
+				}
 				if(((bullet.y>this.player.y) && bullet.y<(this.player.y+this.player.height)) && (bullet.x<=(this.player.x+this.player.width) && (bullet.x>=this.player.x))) {
 					this.removeBullet(bullet);
+					bullet.damage(this.player);
 					this.player.bulletDamage();
-					console.log("Health : " + this.player.health);
 				}
 			},
 
-			triggerBullet:function(x,y,direction,isTurrent){
+			triggerBullet:function(x,y,direction,isTurrent,doubleDamage){
 				if(!isTurrent){
 					if(direction){
 						y=y-1;
 					}else{
 						y=y+1;
 					}
+					var bullet=new Bullet(x,y,direction,isTurrent,0,doubleDamage);
+				}else{
+					var dx=x-(player.x+player.width/2);
+					var dy=y-(player.y+player.width/2);
+					var angle=Math.atan2(dy,dx) - Math.PI;
+					var bullet=new Bullet(x,y,direction,isTurrent,angle,false);
+				
 				}
-				// console.log("Trigger " + direction);
-				var bullet=new Bullet(x,y,direction,isTurrent);
 				this.bullets.push(bullet);
 			},
 
@@ -95,9 +137,13 @@ class Game{
 
 				}.bind(this));
 				this.groundEnemies.forEach(function(enemy,index){
-					if(Math.abs(enemy.y-this.player.y)<=this.player.height){
+					enemy.shootBullet();
+				}.bind(this))
+				this.kamikaze.forEach(function(enemy,index){
+					if((Math.abs(enemy.x-this.player.x)<=this.player.width) && (enemy.y<this.player.y)){
 						enemy.shootBullet();
 					}
+					enemy.move();
 				}.bind(this))
 			},
 
@@ -143,31 +189,39 @@ class Game{
 
 			clearTheDead:function(){
 				this.airEnemies=this.airEnemies.filter(function(enemy,index){
+					if(enemy.health<=0){
+						this.generateConsumables(0.5,enemy.x,enemy.y);
+					}
 					return (enemy.health>0);
+				}.bind(this))	
+
+				this.kamikaze=this.kamikaze.filter(function(enemy,index){
+					if(enemy.health<=0){
+						this.generateConsumables(0.4,enemy.x,enemy.y);
+					}
+					return(enemy.y<=this.height+200);
+				}.bind(this));
+
+				this.consumables=this.consumables.filter(function(item,index){
+					return(item.life>0);
 				})
-				if(this.player.health<=0){
-					console.log("Dead");
+
+			},
+
+			generateConsumables(freq,x,y){
+				if(Math.random()<=freq){
+					if(Math.random()<=0.2){
+						this.consumables.push(new doubleDamage(x,y));
+					}else if(Math.random()<=0.7){
+						this.consumables.push(new healthPower(x,y));
+					}else {
+						this.consumables.push(new doubleBullet(x,y));
+					}
 				}
 			},
 
-			update:function(){
-				this.collideObject(this.player);
-				this.enemyControls();
-				this.bullets.forEach(function(bullet,index){
-					this.bulletCollision(bullet);
-					if(bullet.isTurrent){
-						bullet.moveSide();
-					}else{
-						bullet.moveForward();
-					}
+			tickGunTimer:function(){
 
-					if((bullet.y>this.height+50 || bullet.y<(-this.height-50)) && !bullet.isTurrent){
-						this.removeBullet(bullet);
-					}else if((bullet.x>this.width+50 || bullet.x<(-this.width-50)) && bullet.isTurrent){
-						this.removeBullet(bullet);
-					}
-
-				}.bind(this));
 				this.player.TickWarm();
 				this.airEnemies.forEach(function(enemy,index){
 					enemy.TickWarm();
@@ -175,7 +229,61 @@ class Game{
 				this.groundEnemies.forEach(function(enemy,index){
 					enemy.TickWarm();
 				})
+				this.kamikaze.forEach(function(enemy,index){
+					enemy.TickWarm();
+				})
+				
+			},
+
+			summonKamikaze:function(){
+				if(this.kamikazeActive){
+					if(this.kamikaze.length==0){
+						for(var  i=1;i<=4;i++){
+							let newKami=new Kamikaze(this.getRandomNum(10,120)*i,-(this.getRandomNum(1500,2000)));
+							this.kamikaze.push(newKami);
+						}
+					}
+				}
+			},
+
+			bulletControls:function(){
+				this.bullets.forEach(function(bullet,index){
+					this.bulletCollision(bullet);
+					if(bullet.isTurrent){
+						bullet.fromTurrent();
+					}else{
+						bullet.moveForward();
+					}
+
+					if((bullet.y>this.height+10 || bullet.y<(-this.height-10)) || bullet.x>this.width+10 || bullet.x<(-this.width-10)){
+						this.removeBullet(bullet);
+					}
+					
+				}.bind(this));
+			},
+
+			getRandomNum:function(min,max){
+				var max=Math.floor(max);
+				var min=Math.ceil(min);
+				return Math.floor(Math.random()*(max-min)+min);
+			},
+
+			moveConsumables:function(){
+				this.consumables.forEach(function(item,index){
+					item.checkCollision(this.height,this.width);
+				}.bind(this))
+			},
+
+			update:function(){
+				this.collideObject(this.player);
+				this.collideKamikaze();
+				this.enemyControls();
+				this.bulletControls();
+				this.tickGunTimer();
 				this.clearTheDead();
+				this.summonKamikaze();
+				this.consumeItems();
+				this.moveConsumables();
 			},
 
 
@@ -185,7 +293,9 @@ class Game{
 	}
 
 	update(){
+
 		this.world.update();
+		
 	};
 
 };

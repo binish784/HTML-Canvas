@@ -20,8 +20,29 @@ class Display{
 
 	showText(text){
 		this.ctx.fillStyle="white";
-		this.ctx.font="20px Comic Sans MS"
+		this.ctx.font="20px Comic Sans MS";
 		this.ctx.fillText(text,450,580);
 	}
 
+	startScreen(){
+		this.ctx.fillStyle="black";
+		this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
+		this.ctx.fillStyle='red';
+		this.ctx.font="30px Comic Sans MS";
+		this.ctx.fillText("Welcome to 'The Game'",150,200);
+		this.ctx.fillStyle='white';
+		this.ctx.font="15px Comic Sans MS";
+		this.ctx.fillText("Press 'space' to Start",200,350);
+	}
+
+	deadScreen(){
+		this.ctx.fillStyle="black";
+		this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
+		this.ctx.fillStyle='red';
+		this.ctx.font="30px Comic Sans MS";
+		this.ctx.fillText("Salute to the Dead",150,200);
+		this.ctx.fillStyle='white';
+		this.ctx.font="15px Comic Sans MS";
+		this.ctx.fillText("Press 'space' to restart",200,350);
+	}
 }

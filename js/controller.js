@@ -12,12 +12,13 @@ class Controller{
 		var down=false;
 		if(event.type=='keydown'){
 			down=true;
-			if(event.keyCode==32){
+			if(event.keyCode==32 && game.world.player.health>0){
 				game.world.plantBomb(game.world.player.x,game.world.player.y);
 			}
-			// else if(event.keyCode==90){
-			// 	game.world.player.shootBullet();
-			// }
+			else if(event.keyCode==32 && game.world.player.health<=0){
+				console.log("New Game start");
+				startNewGame();
+			}
 		
 		}
 

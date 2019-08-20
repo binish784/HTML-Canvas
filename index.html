@@ -3,6 +3,13 @@
 <head>
 	<title></title>
 	<style type="text/css">
+		 .clearfix:after{
+			clear: both;
+			content: "";
+			display:table;
+		}
+
+
 		canvas{
 			float: left;
 		}
@@ -21,13 +28,33 @@
 	Enemies:
 	<br>
 	Lime - Air Enemies<br>
-	orange - Ground Turrents
+	orange - Ground Turrents<br>
+	red - kamikaze divers<br>
 	<hr>
 	Controls:
 	<br>
 	z-Shoot<br>
 	space-Bomb
 	<hr>
+	
+	Consumables:
+	<br><br>
+	<div class="clearfix">
+		<div style="height: 20px;width: 20px;background-color:#ffdbdb ; float:left;border:1px solid black"> </div>
+		&nbsp;&nbsp;Health
+	</div><br>
+	<div class="clearfix">
+		<div style="height: 20px;width: 20px;background-color:#b050ff ; float:left;border:1px solid black"></div> &nbsp;&nbsp;Double Bullets
+	</div><br>
+	<div class="clearfix">
+		<div style="height: 20px;width: 20px;background-color:#63acff ; float:left;border:1px solid black"></div> &nbsp;&nbsp;Double Damage
+	</div>
+
+	<hr>
+
+	Instructions:
+	<br>
+	Kill all the enemies both air and ground 
 </div>
 
 
@@ -35,9 +62,12 @@
 <script type="text/javascript" src="js/display.js"></script>
 
 <script type="text/javascript" src="js/entites/player.js"></script>
+<script type="text/javascript" src="js/entites/kamikaze.js"></script>
+<script type="text/javascript" src="js/entites/enemy.js"></script>
 <script type="text/javascript" src="js/entites/turrent.js"></script>
 <script type="text/javascript" src="js/entites/bomb.js"></script>
 <script type="text/javascript" src="js/entites/bullet.js"></script>
+<script type="text/javascript" src="js/entites/consumables.js"></script>
 
 <script type="text/javascript" src="js/game.js"></script>
 <script type="text/javascript" src="js/engine.js"></script>

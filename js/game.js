@@ -220,6 +220,15 @@ class Game{
 				}
 			},
 
+			generateAirEnemies(){
+				if(this.airEnemies.length==0){
+					var number=this.getRandomNum(3,6);
+					for(var i=1;i<=number;i++){
+						this.airEnemies.push(new Enemy(Math.floor((this.width/number)*i-50),-(this.getRandomNum(200,600))));
+					}
+				}
+			},
+
 			tickGunTimer:function(){
 
 				this.player.TickWarm();
@@ -284,6 +293,7 @@ class Game{
 				this.summonKamikaze();
 				this.consumeItems();
 				this.moveConsumables();
+				this.generateAirEnemies();
 			},
 
 

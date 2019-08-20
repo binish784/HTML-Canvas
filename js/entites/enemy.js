@@ -13,12 +13,17 @@ class Enemy{
 		this.GUN_WARM=10;	
 		this.hit=false;
 		this.hitCounter=3;
+		this.gunSound=new Audio('resources/sounds/gun.wav');
+		this.sound=undefined;
 	}
 	
 	shootBullet(){
 		if(this.warm_counter==0){
 			game.world.triggerBullet(this.x+this.width/2,this.y+this.height+2,false,false);
-			this.warm_counter=this.GUN_WARM;	
+			this.warm_counter=this.GUN_WARM;
+			this.sound=this.gunSound.cloneNode();
+			this.sound.volume=0.05;
+  		 this.sound.play();	
 		}
 	}
 

@@ -20,8 +20,8 @@ class Player{
 		this.doubleBulletEnable=false;
 		this.doubleBulletTimer=0;
 
-		// this.gunSound=new Audio('resources/sounds/explosion.wav');
-		// this.sound=undefined;
+		this.gunSound=new Audio('resources/sounds/player-gun.wav');
+		this.sound=undefined;
 	}
 
 	doubleDamage(){
@@ -52,9 +52,9 @@ class Player{
 				game.world.triggerBullet(this.x+this.width/2,this.y-5,true,false,this.doubleDamageEnable);
 			}
 			this.warm_counter=this.GUN_WARM;	
-		// 	this.sound=this.gunSound.cloneNode();
-		// 	this.sound.volume=0.2;
-  		//  this.sound.play();
+			this.sound=this.gunSound.cloneNode();
+			this.sound.volume=0.05;
+  		 this.sound.play();
 		}
 	}
 

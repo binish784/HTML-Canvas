@@ -2,18 +2,19 @@
 class Game{
 	constructor(){
 		this.world={
-			background_color:"rgb(0,0,0)",
-			height:600,
+			score:0,
 			width:600,
-			player:new Player(350,500),
-			kamikazeActive:true,
-			airEnemies:new Array(new Enemy(150,150),new Enemy(250,100),new Enemy(500,150)),
-			kamikaze:new Array(new Kamikaze(10,-1500),new Kamikaze(250,-1500),new Kamikaze(550,-1500)),
-			groundEnemies:new Array(new Turrent(50,50),new Turrent(450,150)),
-			consumables:new Array(),
+			height:600,
 			bombs:new Array(),
 			fires:new Array(),
 			bullets:new Array(),
+			kamikazeActive:true,
+			consumables:new Array(),
+			player:new Player(350,500),
+			background_color:"rgb(0,0,0)",
+			groundEnemies:new Array(new Turrent(50,50),new Turrent(450,150)),
+			airEnemies:new Array(new Enemy(150,150),new Enemy(250,100),new Enemy(500,150)),
+			kamikaze:new Array(new Kamikaze(10,-1500),new Kamikaze(250,-1500),new Kamikaze(550,-1500)),
 				
 			collideKamikaze:function(){
 				this.kamikaze.forEach(function(enemy,index){
@@ -59,6 +60,9 @@ class Game{
 								this.removeBullet(bullet);
 								bullet.damage(enemy);
 								enemy.bulletDamage();
+								if(enemy.health<=0){
+									this.score+=50;
+								}
 							}
 					}.bind(this));
 					this.kamikaze.forEach(function(enemy,index){
@@ -66,6 +70,9 @@ class Game{
 							this.removeBullet(bullet);
 							bullet.damage(enemy);
 							enemy.bulletDamage();
+							if(enemy.health<=0){
+								this.score+=75;
+							}
 						}
 					}.bind(this));
 				}

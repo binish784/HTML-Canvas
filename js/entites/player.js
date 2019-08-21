@@ -22,6 +22,8 @@ class Player{
 
 		this.gunSound=new Audio('resources/sounds/player-gun.wav');
 		this.sound=undefined;
+
+		this.kamikazeCollideSound=new Audio('resources/sounds/kamikaze-collision.wav');
 	}
 
 	doubleDamage(){
@@ -53,8 +55,8 @@ class Player{
 			}
 			this.warm_counter=this.GUN_WARM;	
 			this.sound=this.gunSound.cloneNode();
-			this.sound.volume=0.05;
-  		 this.sound.play();
+			this.sound.volume=0.08;
+  			 this.sound.play();
 		}
 	}
 
@@ -90,6 +92,11 @@ class Player{
 		this.hit=true;
 		this.hitCounter=35;
 		this.color="orange";
+		if(this.health<0){
+			this.sound=this.kamikazeCollideSound.cloneNode();
+			this.sound.volume=1;
+			this.sound.play();
+		}
 	}
 	
 	bulletDamage(){

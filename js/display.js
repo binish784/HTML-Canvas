@@ -18,10 +18,10 @@ class Display{
 		this.ctx.fillRect(Math.floor(x),Math.floor(y),width,height);
 	}
 
-	showText(text){
+	showText(text,x,y){
 		this.ctx.fillStyle="white";
 		this.ctx.font="20px Comic Sans MS";
-		this.ctx.fillText(text,450,580);
+		this.ctx.fillText(text,x,y);
 	}
 
 	startScreen(){
@@ -35,7 +35,7 @@ class Display{
 		this.ctx.fillText("Press 'space' to Start",200,350);
 	}
 
-	deadScreen(){
+	deadScreen(score){
 		this.ctx.fillStyle="black";
 		this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
 		this.ctx.fillStyle='red';
@@ -43,6 +43,7 @@ class Display{
 		this.ctx.fillText("Salute to the Dead",150,200);
 		this.ctx.fillStyle='white';
 		this.ctx.font="15px Comic Sans MS";
-		this.ctx.fillText("Press 'space' to restart",200,350);
+		this.ctx.fillText("High Score : " + score,230,250);
+		this.ctx.fillText("Press 'space' to restart",200,450);
 	}
 }

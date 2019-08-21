@@ -67,11 +67,12 @@ function renderPlayer(){
 	display.drawRectangle(player.x,player.y,player.width,player.height,player.color);
 }
 
-function renderHealth(){
+function renderStatus(){
 	if(player.health>0){
-		display.showText("Health : " + player.health);		
+		display.showText("Health : " + player.health,430,20);
+		display.showText("Score : " + game.world.score,430,45);		
 	}else{
-		display.showText("Player Dead");			
+		display.showText("Player Dead",480,20);			
 	}
 }
 
@@ -83,7 +84,7 @@ function renderConsumables(){
 
 var render=function(){
 	display.fill(game.world.background_color);
-	renderHealth();
+	renderStatus();
 	if(game.world.fires.length>0){
 		renderFires();
 	}
@@ -99,7 +100,12 @@ var render=function(){
 var update=function(){
 
 	if(game.world.player.health<=0){
-			display.deadScreen();	
+			var highScore=JSON.parse(localStorage.getItem('highScores')) || 0;
+		    if (game.world.score>=highScore){
+	        	localStorage.setItem('highScores',JSON.stringify(game.world.score));
+	        }
+	        highScore=localStorage.getItem('highScores');
+			display.deadScreen(highScore);	
 	}
 
 	if(controller.left.active){

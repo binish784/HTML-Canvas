@@ -3,11 +3,11 @@ class Bomb{
 	constructor(x,y){
 		this.x=x+5;
 		this.y=y+10;
-		this.color="#EE0000";
+		this.width=20;
 		this.height=20;
 		this.timer=120;
-		this.width=20;
 		this.flag=true;
+		this.color="#EE0000";
 	}
 
 	bombTick(){

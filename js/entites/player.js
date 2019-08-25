@@ -1,27 +1,22 @@
 
-class Player{
+class Player extends Moveable{
 	constructor(x,y){
-		this.health=100;
-		this.x=x;
-		this.y=y;
-		this.x_velocity=4;
-		this.y_velocity=4;
-		this.height=40;
+		super(x,y);
 		this.width=30;
-		this.color="#45ff01";
-		this.warm_counter=0;
-		this.GUN_WARM=5;
+		this.height=40;
 		this.hit=false;
+		this.health=100;
+		this.GUN_WARM=5;
 		this.hitCounter=0;
-		
+		this.warm_counter=0;
+		this.color="#45ff01";
+		this.sound=undefined;
+
 		this.doubleDamageEnable=false;
 		this.doubleDamageTimer=0;
 
 		this.doubleBulletEnable=false;
 		this.doubleBulletTimer=0;
-
-		this.gunSound=new Audio('resources/sounds/player-gun.wav');
-		this.sound=undefined;
 
 		this.kamikazeCollideSound=new Audio('resources/sounds/kamikaze-collision.wav');
 	}
@@ -54,9 +49,9 @@ class Player{
 				game.world.triggerBullet(this.x+this.width/2,this.y-5,true,false,this.doubleDamageEnable);
 			}
 			this.warm_counter=this.GUN_WARM;	
-			this.sound=this.gunSound.cloneNode();
-			this.sound.volume=0.08;
-  			 this.sound.play();
+			this.sound=sound.get("player").cloneNode();
+			this.sound.volume=0.1;
+			this.sound.play();
 		}
 	}
 

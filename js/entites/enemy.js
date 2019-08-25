@@ -1,29 +1,38 @@
 
-class Enemy{
-	constructor(x,y){
-		this.health=100;
-		this.x=x;
-		this.y=y;
-		this.x_velocity=4;
-		this.y_velocity=4;
-		this.height=40;
+class Enemy extends Moveable{
+	constructor(x,y,spreadShot){
+		super(x,y);
 		this.width=30;
-		this.color="#DDEE11";
-		this.warm_counter=0;
-		this.GUN_WARM=10;	
+		this.height=40;
 		this.hit=false;
+		this.health=100;
+		if(spreadShot){
+			this.GUN_WARM=50;	
+		}else{
+			this.GUN_WARM=10;	
+		}
 		this.hitCounter=3;
-		this.gunSound=new Audio('resources/sounds/gun.wav');
+		this.warm_counter=0;
+		if(spreadShot){
+			this.color="#DDEE99";
+		}else{
+			this.color="#DDEE11";
+		}
 		this.sound=undefined;
+		this.spreadShot=spreadShot || false;
 	}
 	
 	shootBullet(){
 		if(this.warm_counter==0){
-			game.world.triggerBullet(this.x+this.width/2,this.y+this.height+2,false,false);
+			if(this.spreadShot){
+				game.world.triggerBullet(this.x+this.width/2,this.y+this.height+2,false,true);
+			}else{
+				game.world.triggerBullet(this.x+this.width/2,this.y+this.height+2,false,false);
+			}
 			this.warm_counter=this.GUN_WARM;
-			this.sound=this.gunSound.cloneNode();
+			this.sound=sound.get("enemy").cloneNode();
 			this.sound.volume=0.05;
-  		 this.sound.play();	
+  			this.sound.play();	
 		}
 	}
 
@@ -37,7 +46,11 @@ class Enemy{
 			}
 			if(this.hitCounter==0){
 				this.hit=false;
-				this.color="#DDEE11";
+				if(this.spreadShot){
+					this.color='#DDEE99'
+				}else{
+					this.color="#DDEE11";
+				}
 			}
 		}
 	}
@@ -46,17 +59,5 @@ class Enemy{
 		this.hit=true;
 		this.hitCounter=3;
 		this.color="#ff4646";
-	}
-	moveLeft(){
-		this.x+=-this.x_velocity;
-	}
-	moveRight(){
-		this.x+=this.x_velocity;
-	}
-	moveUp(){
-		this.y+=-this.y_velocity;
-	}
-	moveDown(){
-		this.y+=this.y_velocity;
 	}
 }

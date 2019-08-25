@@ -2,10 +2,10 @@
 class Controller{
 	constructor(){
 		console.log("Controller Initialized");
-		this.left=new buttonInput();
-		this.right=new buttonInput();
 		this.up= new buttonInput();
 		this.down=new buttonInput();
+		this.left=new buttonInput();
+		this.right=new buttonInput();
 	}
 
 	handleKeyDownUp(event){

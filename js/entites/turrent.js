@@ -9,7 +9,6 @@ class Turrent{
 		this.GUN_WARM=5;
 		this.ammo=5;
 		this.direction=false;
-		this.gunSound=new Audio('resources/sounds/explosion.wav');
 		this.sound=undefined;
 	}
 
@@ -30,11 +29,9 @@ class Turrent{
 				this.ammo=5;
 			}else{
 				this.warm_counter=this.GUN_WARM;	
-				this.sound=this.gunSound.cloneNode();
+				this.sound=sound.get("turrent").cloneNode();
 				this.sound.volume=0.4;
-				if(this.sound!==null){
-					this.sound.play();
-				}
+				this.sound.play();
 			}
 		}
 	}

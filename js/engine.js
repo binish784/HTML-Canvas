@@ -1,14 +1,14 @@
 class Engine{
 
 	constructor(frame_rate,update,render){
-		this.frame_rate=frame_rate;
-		this.update=update;
-		this.render=render;
-		this.animator=undefined;
 		this.now_time=0;
 		this.last_time=0;
-		this.accumulated_time=0;
+		this.update=update;
 		this.updated=false;
+		this.render=render;
+		this.animator=undefined;
+		this.accumulated_time=0;
+		this.frame_rate=frame_rate;
 		console.log("Engine Initialized");
 	}
 

@@ -1,7 +1,6 @@
 var canvas=document.querySelector("canvas");
 var frame_rate=1000/30;
 
-
 var display= new Display(canvas);
 
 var game = new Game();
@@ -9,6 +8,8 @@ var game = new Game();
 var player=game.world.player;
 
 var controller = new Controller();
+
+var sound= new Sound();
 
 function startNewGame(){
 	display = new Display(canvas);
@@ -45,6 +46,12 @@ function renderBullets(){
 	game.world.bullets.forEach(function(bullet,index){
 		// console.log(bullet);
 		display.drawRectangle(bullet.x,bullet.y,bullet.width,bullet.height,bullet.color);
+	})
+}
+
+function renderBoss(){
+	game.world.boss.forEach(function(enemy,index){
+		display.drawRectangle(enemy.x,enemy.y,enemy.width,enemy.height,enemy.color);
 	})
 }
 
@@ -92,6 +99,7 @@ var render=function(){
 	renderGroundEnemies();
 	renderBombs();
 	renderConsumables();
+	renderBoss();
 	renderAirEnemies();
 	renderPlayer();
 	// console.log(player.x,player.y);

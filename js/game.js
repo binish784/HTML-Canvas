@@ -5,7 +5,8 @@ class Game{
 			score:0,
 			width:600,
 			height:600,
-			boss:new Array(new Boss(250,100)),
+			boss:new Array(),
+			bossActive:false,
 			bombs:new Array(),
 			fires:new Array(),
 			bullets:new Array(),
@@ -13,7 +14,7 @@ class Game{
 			consumables:new Array(),
 			player:new Player(350,500),
 			background_color:"rgb(0,0,0)",
-			groundEnemies:new Array(),
+			groundEnemies:new Array(new Turrent(150,100)),
 			airEnemies:new Array(),
 			kamikaze:new Array(),
 				
@@ -72,7 +73,7 @@ class Game{
 								bullet.damage(enemy);
 								enemy.bulletDamage();
 								if(enemy.health<=0){
-									this.score+=50;
+									this.score+=200;
 								}
 							}
 					}.bind(this));
@@ -170,7 +171,7 @@ class Game{
 						else if(x_shift==1) enemy.moveRight();
 						if(y_shift==-1) enemy.moveUp();
 						else if(y_shift==1) enemy.moveDown();
-						if((enemy.health%150)==0){
+						if((enemy.health%250)==0){
 							for(var i=0;i<3;i++){
 								this.generateConsumables(1,enemy.x+enemy.width/2,enemy.y+enemy.height/2);
 							}
@@ -270,24 +271,40 @@ class Game{
 			},
 
 			generateBoss(){
-				var ran=this.getRandomNum(0,5000);
-				if(ran>0){
-					console.log("Generate Boss");
 					this.boss.push(new Boss(250,100));
-				}
 			},
 
 			generateAirEnemies(){
 				if(this.airEnemies.length==0){
-					var number=this.getRandomNum(3,6);
+					if(this.score<1500){
+						var number=2
+					}else if(this.score<6000){
+						var number=this.getRandomNum(3,5);
+					}else{
+						var number=this.getRandomNum(4,6);
+					}
 					for(var i=1;i<=number;i++){
+						if(this.score<8000){
+							var spreadShot_chances=0;	
+						}
+						else if(this.score<15000){
+							var spreadShot_chances=2;
+						}else if(this.score<20000){
+							var spreadShot_chances=4;
+						}else if(this.score<25000){
+							var spreadShot_chances=6;
+						}else if(this.score<30000){
+							var spreadShot_chances=8;
+						}else{
+							var spreadShot_chances=10;
+						}
 						var ran=this.getRandomNum(0,10);
-						if(ran<=8){
+						if(ran>=spreadShot_chances){
 							var spreadShot=false;
 						}else{
 							var spreadShot=true;
 						}
-						this.airEnemies.push(new Enemy(Math.floor((this.width/number)*i-50),-(this.getRandomNum(200,600)),spreadShot));
+						this.airEnemies.push(new Enemy(Math.floor(((this.width-150)/number)*i),-(this.getRandomNum(200,600)),spreadShot));
 					}
 				}
 			},
@@ -313,7 +330,20 @@ class Game{
 			summonKamikaze:function(){
 				if(this.kamikazeActive){
 					if(this.kamikaze.length==0){
-						for(var  i=1;i<=4;i++){
+						if(this.score<1500){
+							var kamikaze_number=3;
+						}else if(this.score<2500){
+							var kamikaze_number=4;
+						}else if(this.score<10000){
+							var kamikaze_number=5;
+						}else if(this.score<13000){
+							var kamikaze_number=6;
+						}else if(this.score<19000){
+							var kamikaze_number=7;
+						}else{
+							var kamikaze_number=this.getRandomNum(5,10);
+						}
+						for(var  i=1;i<=kamikaze_number;i++){
 							let newKami=new Kamikaze(this.getRandomNum(10,120)*i,-(this.getRandomNum(1500,2000)));
 							this.kamikaze.push(newKami);
 						}
@@ -349,6 +379,23 @@ class Game{
 				}.bind(this))
 			},
 
+			generateEnemies:function(){
+				if((this.score%8000)<100 && this.score>=8000 && this.boss.length==0){
+					this.bossActive=true;
+				}
+				if(this.bossActive){
+					if(this.airEnemies.length==0){
+						this.generateBoss();
+						this.bossActive=false;
+					}	
+				}
+				
+				if(this.boss.length==0){
+					this.summonKamikaze();
+					this.generateAirEnemies();
+				}
+			},
+
 			update:function(){
 				this.collideObject(this.player);
 				this.collideKamikaze();
@@ -358,14 +405,7 @@ class Game{
 				this.clearTheDead();
 				this.consumeItems();
 				this.moveConsumables();
-				if(this.airEnemies.length==0 && this.boss.length==0){
-					this.generateBoss();
-					console.log("condition true");
-				}
-				if(this.boss.length==0){
-					this.summonKamikaze();
-					this.generateAirEnemies();
-				}
+				this.generateEnemies();				
 			},
 
 

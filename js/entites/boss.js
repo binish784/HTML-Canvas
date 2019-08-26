@@ -4,7 +4,7 @@ class Boss extends Moveable{
 		this.hit=false;
 		this.width=120;
 		this.height=100;
-		this.health=2000;
+		this.health=2990;
 		this.hitCounter=3;
 		this.color="#FFFFFF";
 		this.sound=undefined;

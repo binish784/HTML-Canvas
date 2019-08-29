@@ -49,7 +49,11 @@ class Bullet{
 		if(this.doubleDamage){
 			object.health-=20;
 		}else if(this.sniper_shot){
-			object.health-=80;
+			if(this.direction){
+				object.health-=100;
+			}else{
+				object.health-=80;
+			}
 		}else{
 			object.health-=10;
 		}

@@ -51,6 +51,9 @@ function renderBullets(){
 
 function renderBoss(){
 	game.world.boss.forEach(function(enemy,index){
+		if(enemy.armor_enable){
+			display.drawRectangle(enemy.x-10,enemy.y-10,enemy.width+20,enemy.height+20,enemy.armor_color);
+		}
 		display.drawRectangle(enemy.x,enemy.y,enemy.width,enemy.height,enemy.color);
 	})
 }
@@ -71,15 +74,19 @@ function renderGroundEnemies(){
 }
 
 function renderPlayer(){
+	if(player.armor_enable && player.armor>0){
+		display.drawRectangle(player.x-5,player.y-5,player.width+10,player.height+10,player.armor_color);
+	}
 	display.drawRectangle(player.x,player.y,player.width,player.height,player.color);
 }
 
 function renderStatus(){
 	if(player.health>0){
 		display.showText("Health : " + player.health,430,20);
-		display.showText("Score : " + game.world.score,430,45);		
+		display.showText("Score : " + game.world.score,430,45);
+		display.showText("Bomb : " + game.world.player.NUM_OF_BOMBS,430,65);
 	}else{
-		display.showText("Player Dead",480,20);			
+		display.showText("Player Dead",480,20);
 	}
 }
 
@@ -88,6 +95,7 @@ function renderConsumables(){
 		display.drawRectangle(item.x,item.y,item.width,item.height,item.color);
 	})
 }
+
 
 var render=function(){
 	display.fill(game.world.background_color);
@@ -113,7 +121,7 @@ var update=function(){
 	        	localStorage.setItem('highScores',JSON.stringify(game.world.score));
 	        }
 	        highScore=localStorage.getItem('highScores');
-			display.deadScreen(highScore);	
+			display.deadScreen(highScore);
 	}
 
 	if(controller.left.active){

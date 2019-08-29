@@ -2,33 +2,32 @@ class Turrent{
 	constructor(x,y){
 		this.x=x;
 		this.y=y;
-		this.color="#ff8c08";
-		this.height=25;
-		this.width=25;
-		this.warm_counter=Math.floor(Math.random()*(Math.floor(300)-Math.ceil(30))+Math.ceil(30));
-		this.GUN_WARM=5;
 		this.ammo=5;
-		this.direction=false;
+		this.width=25;
+		this.height=25;
+		this.GUN_WARM=5;
+		this.total_ammo=5;
+		this.reloadTime=200;
+		this.color="#ff8c08";
 		this.sound=undefined;
+		this.direction=false;
+		this.turrentShot=true;
+		this.warm_counter=Math.floor(Math.random()*(Math.floor(300)-Math.ceil(30))+Math.ceil(30));
 	}
 
 	shootBullet(){
 		if(this.warm_counter==0){
-			//gun ready to fire
 			if(this.direction){
-				//trigger gun left
-				game.world.triggerBullet(this.x-2,this.y+(this.height/2),this.direction,true);
+				game.world.triggerBullet(this.x-2,this.y+(this.height/2),this.direction,this.turrentShot);
 			}else{
-				//trigger gun right
-				game.world.triggerBullet(this.x+2,this.y+(this.height/2),this.direction,true);
+				game.world.triggerBullet(this.x+2,this.y+(this.height/2),this.direction,this.turrentShot);
 			}
 			this.ammo--;
-			//reset counter
 			if(this.ammo==0){
-				this.warm_counter=200;		
-				this.ammo=5;
+				this.warm_counter=this.reloadTime;
+				this.ammo=this.total_ammo;
 			}else{
-				this.warm_counter=this.GUN_WARM;	
+				this.warm_counter=this.GUN_WARM;
 				this.sound=sound.get("turrent").cloneNode();
 				this.sound.volume=0.4;
 				this.sound.play();
@@ -37,11 +36,8 @@ class Turrent{
 	}
 
 	TickWarm(){
-		//tick the gun counter
 		if(this.warm_counter>0){
 			this.warm_counter--;
 		}
 	}
 }
-
-

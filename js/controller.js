@@ -13,7 +13,7 @@ class Controller{
 		if(event.type=='keydown'){
 			down=true;
 			if(event.keyCode==32 && game.world.player.health>0){
-				game.world.plantBomb(game.world.player.x,game.world.player.y);
+				game.world.player.plantBomb();
 			}
 			else if(event.keyCode==32 && game.world.player.health<=0){
 				console.log("New Game start");
@@ -28,6 +28,7 @@ class Controller{
 			case 39:this.right.getInput(down);break;
 			case 40:this.down.getInput(down);break;
 			case 90:game.world.player.shootBullet();break;	
+		 	case 88:game.world.player.sniperShot();break;	
 		 }
 		// console.log(event.keyCode  + " Pressed");
 	};

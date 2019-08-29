@@ -7,32 +7,30 @@ class Enemy extends Moveable{
 		this.hit=false;
 		this.health=100;
 		if(spreadShot){
-			this.GUN_WARM=50;	
+			this.GUN_WARM=50;
+			this.color="#DDEE99";
 		}else{
-			this.GUN_WARM=10;	
+			this.GUN_WARM=10;
+			this.color="#DDEE11";
 		}
 		this.hitCounter=3;
 		this.warm_counter=0;
-		if(spreadShot){
-			this.color="#DDEE99";
-		}else{
-			this.color="#DDEE11";
-		}
 		this.sound=undefined;
+		this.player=false;
 		this.spreadShot=spreadShot || false;
 	}
-	
+
 	shootBullet(){
 		if(this.warm_counter==0){
 			if(this.spreadShot){
-				game.world.triggerBullet(this.x+this.width/2,this.y+this.height+2,false,true);
+				game.world.triggerBullet(this.x+this.width/2,this.y+this.height+2,this.player,this.spreadShot);
 			}else{
-				game.world.triggerBullet(this.x+this.width/2,this.y+this.height+2,false,false);
+				game.world.triggerBullet(this.x+this.width/2,this.y+this.height+2,this.player,this.spreadShot);
 			}
 			this.warm_counter=this.GUN_WARM;
 			this.sound=sound.get("enemy").cloneNode();
 			this.sound.volume=0.05;
-  			this.sound.play();	
+  		this.sound.play();
 		}
 	}
 

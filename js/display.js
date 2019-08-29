@@ -1,11 +1,24 @@
 class Display{
 	constructor(canvas){
 		this.canvas=canvas;
+		this.player_sprite=new Image();
+		this.player_sprite.src="img/player_ship.png";
 		// this.canvas.style.height="600px";
 		// this.canvas.style.width="600px";
 		this.canvas.style.backgroundColor="black";
 		this.ctx=this.canvas.getContext("2d");
 		console.log("Display Initialized");
+	}
+
+	drawSprite(sprite,x,y){
+		var sprite_height=36;
+		var sprite_width=27;
+		switch(sprite){
+			case "player":
+				var sprite=this.player_sprite;
+				break;
+		}
+		this.ctx.drawImage(sprite,49,0,27,36,x,y,27,36);
 	}
 
 	fill(color){

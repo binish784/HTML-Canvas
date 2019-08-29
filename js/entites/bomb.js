@@ -31,12 +31,12 @@ class Bomb{
 }
 class Fire{
 	constructor(x,y){
-		this.color="#111199";
 		this.x=x-20;
 		this.y=y-20;
-		this.timer=100;
-		this.height=60;
 		this.width=60;
+		this.height=60;
+		this.timer=100;
+		this.color="#111199";
 	}
 	fireTick(){
 		this.timer--;

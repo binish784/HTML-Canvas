@@ -11,13 +11,13 @@ class Game{
 			fires:new Array(),
 			bullets:new Array(),
 			kamikazeActive:true,
+			kamikaze:new Array(),
+			airEnemies:new Array(),
 			consumables:new Array(),
 			player:new Player(350,500),
 			background_color:"rgb(0,0,0)",
 			groundEnemies:new Array(new Turrent(150,100)),
-			airEnemies:new Array(),
-			kamikaze:new Array(),
-				
+
 			collideKamikaze:function(){
 				this.kamikaze.forEach(function(enemy,index){
 					if((enemy.x+enemy.width>=player.x) && (enemy.x<=player.x+player.width) && (enemy.y+enemy.height>=player.y) && (enemy.y<=player.y+player.height)){
@@ -39,7 +39,7 @@ class Game{
 				})
 				this.consumables=this.consumables.filter(function(item,index){
 					return (!item.consumed);
-				})	
+				})
 			},
 
 			collideObject:function(object){
@@ -90,7 +90,6 @@ class Game{
 				}
 				if(((bullet.y>this.player.y) && bullet.y<(this.player.y+this.player.height)) && (bullet.x<=(this.player.x+this.player.width) && (bullet.x>=this.player.x))) {
 					this.removeBullet(bullet);
-					bullet.damage(this.player);
 					this.player.bulletDamage();
 				}
 			},
@@ -117,6 +116,7 @@ class Game{
 				var bomb= new Bomb(x,y);
 				this.bombs.push(bomb);
 				console.log("Planted at ",x,y );
+
 			},
 
 			explodeBomb:function(bomb){
@@ -128,7 +128,7 @@ class Game{
 				this.fires.push(fire);
 				this.groundEnemies=this.groundEnemies.filter(function(enemy,index){
 					return  !((
-						(enemy.x+enemy.width)>=(fire.x) && 
+						(enemy.x+enemy.width)>=(fire.x) &&
 						(enemy.x<=fire.x+fire.width) &&
 						(enemy.y+enemy.height)>=(fire.y) &&
 						(enemy.y<=fire.y+fire.height)))
@@ -149,9 +149,9 @@ class Game{
 					}else{
 						if((Math.abs(enemy.x-this.player.x)<=this.player.width) && (enemy.y<this.player.y)){
 							enemy.shootBullet();
-						}	
+						}
 					}
-					
+
 					let shift=this.getRandomMoveShift(enemy);
 					let x_shift=shift[0];
 					let y_shift=shift[1];
@@ -171,8 +171,8 @@ class Game{
 						else if(x_shift==1) enemy.moveRight();
 						if(y_shift==-1) enemy.moveUp();
 						else if(y_shift==1) enemy.moveDown();
-						if((enemy.health%250)==0){
-							for(var i=0;i<3;i++){
+						if((enemy.health%350)==0){
+							for(var i=0;i<2;i++){
 								this.generateConsumables(1,enemy.x+enemy.width/2,enemy.y+enemy.height/2);
 							}
 							enemy.health-=10;
@@ -199,16 +199,16 @@ class Game{
 					}
 					else{
 						shift.push(1);
-					}	
+					}
 				}else{
 					if(Math.random()<=0.5){
 						shift.push(Math.floor(Math.random() * 2)+1);
 					}else{
 						shift.push(Math.floor(Math.random() * 2)-1);
-					}	
+					}
 				}
 				if(enemy.y>=(this.player.y-25)){
-					shift.push(-1);	
+					shift.push(-1);
 				}
 				else if(enemy.y<=this.player.y-400){
 					shift.push(1);
@@ -218,7 +218,7 @@ class Game{
 						shift.push(Math.floor(Math.random() * 2)-1);
 					}else{
 						shift.push(Math.floor(Math.random() * 2)+1);
-					}	
+					}
 				}
 				return shift;
 			},
@@ -242,8 +242,11 @@ class Game{
 					if(enemy.health<=0){
 						this.generateConsumables(0.9,enemy.x,enemy.y);
 					}
+					if(enemy.health==0){
+						this.player.sniper_enable=true;
+					}
 					return (enemy.health>0);
-				}.bind(this))	
+				}.bind(this))
 
 				this.kamikaze=this.kamikaze.filter(function(enemy,index){
 					if(enemy.health<=0){
@@ -271,7 +274,11 @@ class Game{
 			},
 
 			generateBoss(){
-					this.boss.push(new Boss(250,100));
+				var armored_boss=false;
+				if(player.sniper_enable){
+					armored_boss=true;
+				}
+				this.boss.push(new Boss(250,100,armored_boss));
 			},
 
 			generateAirEnemies(){
@@ -285,7 +292,7 @@ class Game{
 					}
 					for(var i=1;i<=number;i++){
 						if(this.score<8000){
-							var spreadShot_chances=0;	
+							var spreadShot_chances=0;
 						}
 						else if(this.score<15000){
 							var spreadShot_chances=2;
@@ -324,7 +331,7 @@ class Game{
 				this.boss.forEach(function(enemy,index){
 					enemy.TickWarm();
 				})
-				
+
 			},
 
 			summonKamikaze:function(){
@@ -363,7 +370,7 @@ class Game{
 					if((bullet.y>this.height+10 || bullet.y<(-this.height-10)) || bullet.x>this.width+10 || bullet.x<(-this.width-10)){
 						this.removeBullet(bullet);
 					}
-					
+
 				}.bind(this));
 			},
 
@@ -380,16 +387,15 @@ class Game{
 			},
 
 			generateEnemies:function(){
-				if((this.score%8000)<100 && this.score>=8000 && this.boss.length==0){
+				if((this.score%8000)<250 && this.score>=8000 && this.boss.length==0){
 					this.bossActive=true;
 				}
 				if(this.bossActive){
 					if(this.airEnemies.length==0){
 						this.generateBoss();
 						this.bossActive=false;
-					}	
+					}
 				}
-				
 				if(this.boss.length==0){
 					this.summonKamikaze();
 					this.generateAirEnemies();
@@ -405,7 +411,7 @@ class Game{
 				this.clearTheDead();
 				this.consumeItems();
 				this.moveConsumables();
-				this.generateEnemies();				
+				this.generateEnemies();
 			},
 
 
@@ -417,8 +423,7 @@ class Game{
 	update(){
 
 		this.world.update();
-		
+
 	};
 
 };
-

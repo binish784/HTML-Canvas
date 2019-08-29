@@ -11,14 +11,13 @@ class Kamikaze{
 		this.y_velocity=6;
 		this.warm_counter=0;
 	}
-	
+
 	shootBullet(){
 		if(this.warm_counter==0){
 			game.world.triggerBullet(this.x+this.width/2,this.y+this.height+10,false,false);
-			this.warm_counter=this.GUN_WARM;	
+			this.warm_counter=this.GUN_WARM;
 		}
 	}
-
 	TickWarm(){
 		if(this.warm_counter>0){
 			this.warm_counter--;

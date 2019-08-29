@@ -1,6 +1,7 @@
 class Boss extends Moveable{
-	constructor(x,y){
+	constructor(x,y,armor_enable){
 		super(x,y);
+		this.armor=500;
 		this.hit=false;
 		this.width=120;
 		this.height=100;
@@ -12,9 +13,11 @@ class Boss extends Moveable{
 		this.SNIPER_GUN_WARM=546;
 		this.TURRENT_GUN_WARM=200;
 		this.total_turrent_ammo=6;
+		this.armor_color="#e1e1e1";
+		this.sniper_warm_counter=0;
 		this.sniper_sound=undefined;
-		this.turrent_ammo=this.total_turrent_ammo;	
-		this.sniper_warm_counter=this.SNIPER_GUN_WARM;
+		this.armor_enable=armor_enable || false;
+		this.turrent_ammo=this.total_turrent_ammo;
 		this.rifle_warm_counter=this.RIFLE_GUN_WARM;
 		this.turrent_warm_counter=this.TURRENT_GUN_WARM;
 	}
@@ -24,10 +27,10 @@ class Boss extends Moveable{
 			game.world.triggerBullet(this.x+this.width/2,this.y+this.height+2,false,true);
 			this.turrent_ammo--;
 			if(this.turrent_ammo==0){
-				this.turrent_warm_counter=this.TURRENT_GUN_WARM;		
+				this.turrent_warm_counter=this.TURRENT_GUN_WARM;
 				this.turrent_ammo=this.total_turrent_ammo;
 			}else{
-				this.turrent_warm_counter=5;	
+				this.turrent_warm_counter=5;
 				this.sound=sound.get("turrent").cloneNode();
 				this.sound.volume=0.4;
 				this.sound.play();
@@ -71,14 +74,29 @@ class Boss extends Moveable{
 			}
 			if(this.hitCounter==0){
 				this.hit=false;
-				this.color='#ffffff'	
+				if(this.armor_enable){
+					this.armor_color='#e1e1e1';
+				}else{
+					this.color='#ffffff';
+				}
 			}
 		}
 	}
 	bulletDamage(){
-		this.health-=10;
+		if(this.armor==0 && this.armor_enable){
+			this.armor_enable=false;
+		}
+		if(this.armor>0 && this.armor_enable){
+			this.armor-=10;
+		}else{
+			this.health-=10;
+		}
 		this.hit=true;
 		this.hitCounter=3;
-		this.color="#ff4646";
+		if(this.armor_enable){
+			this.armor_color="#ff4646";
+		}else{
+			this.color="#ff4646";
+		}
 	}
 }

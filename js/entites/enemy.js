@@ -2,8 +2,8 @@
 class Enemy extends Moveable{
 	constructor(x,y,spreadShot){
 		super(x,y);
-		this.width=30;
-		this.height=40;
+		this.width=32;
+		this.height=32;
 		this.hit=false;
 		this.health=100;
 		if(spreadShot){
@@ -18,6 +18,7 @@ class Enemy extends Moveable{
 		this.sound=undefined;
 		this.player=false;
 		this.spreadShot=spreadShot || false;
+		this.sprite=new Sprite("Enemy",32,32);
 	}
 
 	shootBullet(){
@@ -58,4 +59,20 @@ class Enemy extends Moveable{
 		this.hitCounter=3;
 		this.color="#ff4646";
 	}
+
+		moveLeft(){
+			this.sprite.update(-1);
+			this.x+=-this.x_velocity;
+		}
+		moveRight(){
+			this.sprite.update(1);
+			this.x+=this.x_velocity;
+		}
+		moveUp(){
+			this.y+=-this.y_velocity;
+		}
+		moveDown(){
+			this.y+=this.y_velocity;
+		}
+
 }

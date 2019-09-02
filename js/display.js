@@ -1,24 +1,9 @@
 class Display{
 	constructor(canvas){
 		this.canvas=canvas;
-		this.player_sprite=new Image();
-		this.player_sprite.src="img/player_ship.png";
-		// this.canvas.style.height="600px";
-		// this.canvas.style.width="600px";
 		this.canvas.style.backgroundColor="black";
 		this.ctx=this.canvas.getContext("2d");
 		console.log("Display Initialized");
-	}
-
-	drawSprite(sprite,x,y){
-		var sprite_height=36;
-		var sprite_width=27;
-		switch(sprite){
-			case "player":
-				var sprite=this.player_sprite;
-				break;
-		}
-		this.ctx.drawImage(sprite,49,0,27,36,x,y,27,36);
 	}
 
 	fill(color){
@@ -27,8 +12,36 @@ class Display{
 	}
 
 	drawRectangle(x,y,width,height,color){
+			this.ctx.fillStyle=color;
+			this.ctx.fillRect(Math.floor(x),Math.floor(y),width,height);
+		}
+
+	drawEnemy(x,y,width,height,color){
+		this.ctx.fillStyle="#76ff69";
+		this.ctx.fillRect(Math.floor(x+(width/2)-5),Math.floor(y+height),10,10);
 		this.ctx.fillStyle=color;
-		this.ctx.fillRect(Math.floor(x),Math.floor(y),width,height);
+		this.ctx.fillRect(Math.floor(x),Math.floor(y+10),width,height);
+		this.ctx.fillStyle="green";
+		this.ctx.fillRect(Math.floor(x),Math.floor(y+5),width,5);
+		this.ctx.fillStyle="red";
+		this.ctx.fillRect(Math.floor(x-5),Math.floor(y+20),5,15);
+		this.ctx.fillRect(Math.floor(x-10),Math.floor(y+15),5,15);
+		// this.ctx.fillRect(Math.floor(x+width-5),Math.floor(y+height+15),5,15);
+		// this.ctx.fillRect(Math.floor(x+width),Math.floor(y+height+20),5,15);
+	}
+
+	drawPlayer(x,y,width,height,color){
+		this.ctx.fillStyle="#76ff69";
+		this.ctx.fillRect(Math.floor(x+(width/2)-5),Math.floor(y-10),10,10);
+		this.ctx.fillStyle=color;
+		this.ctx.fillRect(Math.floor(x),Math.floor(y),width,height-10);
+		this.ctx.fillStyle="green";
+		this.ctx.fillRect(Math.floor(x),Math.floor(y+height-10),width,5);
+		this.ctx.fillStyle="red";
+		this.ctx.fillRect(Math.floor(x-5),Math.floor(y+height-20),5,15);
+		this.ctx.fillRect(Math.floor(x-10),Math.floor(y+height-15),5,15);
+		this.ctx.fillRect(Math.floor(x+width+5),Math.floor(y+height-15),5,15);
+		this.ctx.fillRect(Math.floor(x+width),Math.floor(y+height-20),5,15);
 	}
 
 	showText(text,x,y){

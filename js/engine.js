@@ -9,30 +9,33 @@ class Engine{
 		this.animator=undefined;
 		this.accumulated_time=0;
 		this.frame_rate=frame_rate;
+		this.game_start=false;
 		console.log("Engine Initialized");
 	}
 
 	run(){
-		this.now=this.getTimestamp();
-		this.accumulated_time+=(this.last_time-this.now_time);
-		if(this.accumulated_time>=this.frame_rate*3){
-			this.accumulated_time=this.frame_rate;
-		}
-		while(this.accumulated_time>=this.frame_rate){
-			this.accumulated_time-=this.frame_rate;
-			this.update();
-			this.updated=true;
-		}
-		if(this.updated){
-			this.render();
-			this.updated=false;
-		}
-		this.animator=window.requestAnimationFrame(function(){
-			this.run();
-		}.bind(this));
-		this.last_time=this.now;	
-	}
+		if(this.game_start){
+			this.now=this.getTimestamp();
+			this.accumulated_time+=(this.last_time-this.now_time);
+			if(this.accumulated_time>=this.frame_rate*3){
+				this.accumulated_time=this.frame_rate;
+			}
+			while(this.accumulated_time>=this.frame_rate){
+				this.accumulated_time-=this.frame_rate;
+				this.update();
+				this.updated=true;
+			}
+			if(this.updated){
+				this.render();
+				this.updated=false;
+			}
+			this.animator=window.requestAnimationFrame(function(){
+				this.run();
+			}.bind(this));
+			this.last_time=this.now;
 
+		}
+	}
 
 	getTimestamp(){
 		if(window.performance && window.performance.now()){
@@ -44,13 +47,20 @@ class Engine{
 
 	start(){
 		this.last_time=this.getTimestamp();
-		this.animator=window.requestAnimationFrame(function(){
-			this.run();
-		}.bind(this));
-	}
+		display.startScreen();
+			if(this.game_start){
+				this.animator=window.requestAnimationFrame(function(){
+					this.run();
+				}.bind(this));
+			}
+		}
 
 	stop(){
-		window.cancelAnimationFrame(this.animator);
+		if(window.cancelAnimationFrame(this.animator)){
+			console.log("canacelleed");
+		}else{
+			console.log("Cancel Failed");
+		}
 	}
 
 }

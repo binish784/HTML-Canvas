@@ -60,7 +60,7 @@ function renderBoss(){
 
 function renderAirEnemies(){
 	game.world.airEnemies.forEach(function(enemy,index){
-		display.drawRectangle(enemy.x,enemy.y,enemy.width,enemy.height,enemy.color);
+		enemy.sprite.render(display.ctx,enemy.x,enemy.y);
 	})
 	game.world.kamikaze.forEach(function(enemy,index){
 		display.drawRectangle(enemy.x,enemy.y,enemy.width,enemy.height,enemy.color);
@@ -74,10 +74,7 @@ function renderGroundEnemies(){
 }
 
 function renderPlayer(){
-	if(player.armor_enable && player.armor>0){
-		display.drawRectangle(player.x-5,player.y-5,player.width+10,player.height+10,player.armor_color);
-	}
-	display.drawRectangle(player.x,player.y,player.width,player.height,player.color);
+	player.sprite.render(display.ctx,player.x,player.y);
 }
 
 function renderStatus(){
@@ -95,7 +92,6 @@ function renderConsumables(){
 		display.drawRectangle(item.x,item.y,item.width,item.height,item.color);
 	})
 }
-
 
 var render=function(){
 	display.fill(game.world.background_color);
@@ -121,13 +117,16 @@ var update=function(){
 	        	localStorage.setItem('highScores',JSON.stringify(game.world.score));
 	        }
 	        highScore=localStorage.getItem('highScores');
+			engine.game_start=false;
 			display.deadScreen(highScore);
 	}
 
 	if(controller.left.active){
+		player.sprite.update(-1);
 		player.moveLeft();
 	}
 	if(controller.right.active){
+		player.sprite.update(1);
 		player.moveRight();
 	}
 	if(controller.up.active){
@@ -135,6 +134,10 @@ var update=function(){
 	}
 	if(controller.down.active){
 		player.moveDown();
+	}
+	if(!(controller.left.active || controller.right.active || controller.up.active || controller.down.active)){
+		console.log("Player Idle");
+		player.sprite.stayIdle();
 	}
 
 	game.update();

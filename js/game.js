@@ -5,6 +5,7 @@ class Game{
 			score:0,
 			width:600,
 			height:600,
+			map_speed:1,
 			boss:new Array(),
 			bossActive:false,
 			bombs:new Array(),
@@ -16,7 +17,7 @@ class Game{
 			consumables:new Array(),
 			player:new Player(350,500),
 			background_color:"rgb(0,0,0)",
-			groundEnemies:new Array(new Turrent(150,100)),
+			groundEnemies:new Array(),
 
 			collideKamikaze:function(){
 				this.kamikaze.forEach(function(enemy,index){
@@ -63,7 +64,7 @@ class Game{
 								bullet.damage(enemy);
 								enemy.bulletDamage();
 								if(enemy.health<=0){
-									this.score+=50;
+									this.score+=enemy.kill_value;
 								}
 							}
 					}.bind(this));
@@ -73,7 +74,7 @@ class Game{
 								bullet.damage(enemy);
 								enemy.bulletDamage();
 								if(enemy.health<=0){
-									this.score+=200;
+									this.score+=enemy.kill_value;
 								}
 							}
 					}.bind(this));
@@ -83,7 +84,7 @@ class Game{
 							bullet.damage(enemy);
 							enemy.bulletDamage();
 							if(enemy.health<=0){
-								this.score+=75;
+								this.score+=enemy.kill_value;
 							}
 						}
 					}.bind(this));
@@ -116,7 +117,6 @@ class Game{
 				var bomb= new Bomb(x,y);
 				this.bombs.push(bomb);
 				console.log("Planted at ",x,y );
-
 			},
 
 			explodeBomb:function(bomb){
@@ -127,12 +127,17 @@ class Game{
 				});
 				this.fires.push(fire);
 				this.groundEnemies=this.groundEnemies.filter(function(enemy,index){
-					return  !((
-						(enemy.x+enemy.width)>=(fire.x) &&
-						(enemy.x<=fire.x+fire.width) &&
-						(enemy.y+enemy.height)>=(fire.y) &&
-						(enemy.y<=fire.y+fire.height)))
-				})
+						if(((enemy.x+enemy.width)>=(fire.x) &&
+							(enemy.x<=fire.x+fire.width) &&
+							(enemy.y+enemy.height)>=(fire.y) &&
+							(enemy.y<=fire.y+fire.height))){
+								var busted=true;
+								this.score+=enemy.kill_value;
+							}else{
+								var busted=false;
+							}
+					return  !(busted)
+				}.bind(this));
 			},
 
 			removeFire:function(index){
@@ -181,7 +186,14 @@ class Game{
 					}.bind(this))
 				}
 				this.groundEnemies.forEach(function(enemy,index){
+					enemy.y+=this.map_speed;
 					enemy.shootBullet();
+				}.bind(this))
+				this.bombs.forEach(function(bomb,index){
+					bomb.y+=this.map_speed/2;
+				}.bind(this))
+				this.fires.forEach(function(fire,index){
+					fire.y+=this.map_speed;
 				}.bind(this))
 				this.kamikaze.forEach(function(enemy,index){
 					if((Math.abs(enemy.x-this.player.x)<=this.player.width) && (enemy.y<this.player.y)){
@@ -242,8 +254,12 @@ class Game{
 					if(enemy.health<=0){
 						this.generateConsumables(0.9,enemy.x,enemy.y);
 					}
-					if(enemy.health==0){
+					if(enemy.health<=0 && this.player.sniper_enable==false){
 						this.player.sniper_enable=true;
+						if(!this.player.armor_enable){
+							message_enabled=true;
+							message="Sniper Enabled - 'x' to shoot ";
+						}
 					}
 					return (enemy.health>0);
 				}.bind(this))
@@ -258,6 +274,9 @@ class Game{
 				this.consumables=this.consumables.filter(function(item,index){
 					return(item.life>0);
 				})
+				this.groundEnemies=this.groundEnemies.filter(function(turrent,index){
+					return(turrent.y+turrent.height<this.height+50);
+				}.bind(this));
 
 			},
 
@@ -278,7 +297,26 @@ class Game{
 				if(player.sniper_enable){
 					armored_boss=true;
 				}
-				this.boss.push(new Boss(250,100,armored_boss));
+				this.boss.push(new Boss(250,-1000,armored_boss));
+			},
+
+			generateGroundEnemies(){
+				var ran=this.getRandomNum(0,500);
+				if(this.groundEnemies.length==0 && ran>450){
+					if(this.score<8000){
+						var max_count=1;
+					}else if(this.score<16000){
+						var max_count=2;
+					}else {
+						var max_count=3;
+					}
+					var number=this.getRandomNum(0,max_count+1);
+					for(var i=1;i<=number;i++){
+						var y=this.getRandomNum(-500,-300);
+						var x=this.getRandomNum(50,this.width-100);
+						this.groundEnemies.push(new Turrent(x,y));
+					}
+				}
 			},
 
 			generateAirEnemies(){
@@ -387,7 +425,7 @@ class Game{
 			},
 
 			generateEnemies:function(){
-				if((this.score%8000)<250 && this.score>=8000 && this.boss.length==0){
+				if((this.score%8000)<500 && this.score>=8000 && this.boss.length==0){
 					this.bossActive=true;
 				}
 				if(this.bossActive){
@@ -399,6 +437,7 @@ class Game{
 				if(this.boss.length==0){
 					this.summonKamikaze();
 					this.generateAirEnemies();
+					this.generateGroundEnemies();
 				}
 			},
 

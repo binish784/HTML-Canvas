@@ -1,12 +1,14 @@
+
 class Boss extends Moveable{
 	constructor(x,y,armor_enable){
 		super(x,y);
-		this.armor=500;
 		this.hit=false;
-		this.width=120;
-		this.height=100;
+		this.width=80;
+		this.height=64;
+		this.armor=500;
 		this.health=2990;
 		this.hitCounter=3;
+		this.kill_value=500;
 		this.color="#FFFFFF";
 		this.sound=undefined;
 		this.RIFLE_GUN_WARM=40;
@@ -16,6 +18,7 @@ class Boss extends Moveable{
 		this.armor_color="#e1e1e1";
 		this.sniper_warm_counter=0;
 		this.sniper_sound=undefined;
+		this.sprite=new Sprite("boss",80,64);
 		this.armor_enable=armor_enable || false;
 		this.turrent_ammo=this.total_turrent_ammo;
 		this.rifle_warm_counter=this.RIFLE_GUN_WARM;

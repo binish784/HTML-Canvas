@@ -61,7 +61,7 @@ class Display{
 		this.ctx.fillText("Press 'space' to Start",200,350);
 	}
 
-	deadScreen(score){
+	deadScreen(scores,player_score){
 		this.ctx.fillStyle="black";
 		this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
 		this.ctx.fillStyle='red';
@@ -69,7 +69,18 @@ class Display{
 		this.ctx.fillText("Salute to the Dead",150,200);
 		this.ctx.fillStyle='white';
 		this.ctx.font="15px Comic Sans MS";
-		this.ctx.fillText("High Score : " + score,230,250);
-		this.ctx.fillText("Press 'space' to restart",200,450);
+		this.ctx.fillText("High Score : " + scores[scores.length-1],230,250);
+		var y=290;
+		for(var i=4;i>=0;i--){
+			if(scores[i]==player_score){
+					this.ctx.fillStyle="yellow";
+					this.ctx.fillText(scores[i],260,y);
+					this.ctx.fillStyle="white";
+			}else{
+				this.ctx.fillText(scores[i],260,y);
+			}
+			y=y+40;
+		}
+		this.ctx.fillText("Press 'space' to restart",200,500);
 	}
 }

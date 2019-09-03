@@ -51,10 +51,11 @@ function renderBullets(){
 
 function renderBoss(){
 	game.world.boss.forEach(function(enemy,index){
-		if(enemy.armor_enable){
-			display.drawRectangle(enemy.x-10,enemy.y-10,enemy.width+20,enemy.height+20,enemy.armor_color);
-		}
-		display.drawRectangle(enemy.x,enemy.y,enemy.width,enemy.height,enemy.color);
+		// if(enemy.armor_enable){
+		// 	display.drawRectangle(enemy.x-10,enemy.y-10,enemy.width+20,enemy.height+20,enemy.armor_color);
+		// }
+		// display.drawRectangle(enemy.x,enemy.y,enemy.width,enemy.height,enemy.color);
+		enemy.sprite.render(display.ctx,enemy.x,enemy.y);
 	})
 }
 
@@ -63,7 +64,7 @@ function renderAirEnemies(){
 		enemy.sprite.render(display.ctx,enemy.x,enemy.y);
 	})
 	game.world.kamikaze.forEach(function(enemy,index){
-		display.drawRectangle(enemy.x,enemy.y,enemy.width,enemy.height,enemy.color);
+		enemy.sprite.render(display.ctx,enemy.x,enemy.y);
 	})
 }
 
@@ -74,6 +75,9 @@ function renderGroundEnemies(){
 }
 
 function renderPlayer(){
+	// if(player.armor_enable && player.armor>0){
+	// 	display.drawRectangle(player.x-10,player.y-10,player.width+20,player.height+20,player.armor_color);
+	// }
 	player.sprite.render(display.ctx,player.x,player.y);
 }
 
@@ -84,6 +88,18 @@ function renderStatus(){
 		display.showText("Bomb : " + game.world.player.NUM_OF_BOMBS,430,65);
 	}else{
 		display.showText("Player Dead",480,20);
+	}
+}
+
+message_time=150;
+message="";
+message_enabled=false;
+function renderMessage(){
+	if(message_time>0 && message_enabled){
+		display.showText(message,220,220);
+		message_time--;
+	}else{
+		message_enabled=false;
 	}
 }
 
@@ -105,6 +121,7 @@ var render=function(){
 	renderConsumables();
 	renderBoss();
 	renderAirEnemies();
+	renderMessage();
 	renderPlayer();
 	// console.log(player.x,player.y);
 }
@@ -112,13 +129,17 @@ var render=function(){
 var update=function(){
 
 	if(game.world.player.health<=0){
-			var highScore=JSON.parse(localStorage.getItem('highScores')) || 0;
-		    if (game.world.score>=highScore){
-	        	localStorage.setItem('highScores',JSON.stringify(game.world.score));
-	        }
-	        highScore=localStorage.getItem('highScores');
+			var highScore=JSON.parse(localStorage.getItem('highScores')) || [0,0,0,0,0] ;
+			highScore=highScore.sort(function(a,b){return (a-b);});
+			if (game.world.score>=highScore[0]){
+					highScore[0]=game.world.score;
+					highScore=highScore.sort(function(a,b){return (a-b);});
+
+					localStorage.setItem('highScores',JSON.stringify(highScore));
+        }
+        highScore=JSON.parse(localStorage.getItem('highScores'));
 			engine.game_start=false;
-			display.deadScreen(highScore);
+			display.deadScreen(highScore,game.world.score);
 	}
 
 	if(controller.left.active){

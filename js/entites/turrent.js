@@ -7,6 +7,7 @@ class Turrent{
 		this.height=25;
 		this.GUN_WARM=5;
 		this.total_ammo=5;
+		this.kill_value=75;
 		this.reloadTime=200;
 		this.color="#ff8c08";
 		this.sound=undefined;

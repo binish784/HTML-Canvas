@@ -7,7 +7,7 @@ class Enemy extends Moveable{
 		this.hit=false;
 		this.health=100;
 		if(spreadShot){
-			this.GUN_WARM=50;
+			this.GUN_WARM=40;
 			this.color="#DDEE99";
 		}else{
 			this.GUN_WARM=10;
@@ -18,7 +18,13 @@ class Enemy extends Moveable{
 		this.sound=undefined;
 		this.player=false;
 		this.spreadShot=spreadShot || false;
-		this.sprite=new Sprite("Enemy",32,32);
+		if(spreadShot){
+			this.kill_value=60;
+			this.sprite=new animatedSprite("Enemy2",32,32);
+		}else{
+			this.kill_value=50;
+			this.sprite=new animatedSprite("Enemy",32,32);
+		}
 	}
 
 	shootBullet(){
@@ -48,6 +54,7 @@ class Enemy extends Moveable{
 				if(this.spreadShot){
 					this.color='#DDEE99'
 				}else{
+					this.sprite=new animatedSprite("Enemy",32,32);
 					this.color="#DDEE11";
 				}
 			}
@@ -56,7 +63,9 @@ class Enemy extends Moveable{
 	bulletDamage(){
 		this.health-=10;
 		this.hit=true;
-		this.hitCounter=3;
+		this.sprite=new animatedSprite("Enemy_hit",32,32);
+		console.log(this.sprite);
+		this.hitCounter=15;
 		this.color="#ff4646";
 	}
 

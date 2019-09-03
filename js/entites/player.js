@@ -5,7 +5,7 @@ class Player extends Moveable{
 		this.IDLE_Width=32;
 		this.IDLE_Height=32;
 		this.hit=false;
-		this.armor=100;
+		this.armor=	0;
 		this.health=100;
 		this.GUN_WARM=5;
 		this.player=true;
@@ -27,7 +27,7 @@ class Player extends Moveable{
 		this.height=this.IDLE_Height;
 		this.doubleDamageEnable=false;
 		this.doubleBulletEnable=false;
-		this.sprite=new Sprite("Player",32,32);
+		this.sprite=new animatedSprite("Player",32,32);
 	}
 
 	doubleDamage(){
@@ -70,7 +70,6 @@ class Player extends Moveable{
 
 	sniperShot(){
 		if(this.sniper_warm_counter==0 && this.sniper_enable){
-			console.log("Sniper Shot");
 			game.world.triggerBullet(this.x+this.width/2,this.y-5,this.player,this.turrentShot,false,this.sniper_enable);
 			this.sniper_warm_counter=this.SNIPER_GUN_WARM;
 			this.sound=sound.get("sniper").cloneNode();
@@ -94,7 +93,7 @@ class Player extends Moveable{
 		if(this.warm_counter>0){
 			this.warm_counter--;
 		}
-		if(this.sniper_warm_counter>0){
+		if(this.sniper_warm_counter>0 && this.sniper_enable){
 			this.sniper_warm_counter--;
 		}
 		if(this.hit){

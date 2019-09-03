@@ -3,13 +3,15 @@ class Kamikaze{
 	constructor(x,y){
 		this.x=x;
 		this.y=y;
-		this.width=30;
-		this.height=40;
+		this.width=32;
+		this.height=32;
 		this.health=30;
 		this.GUN_WARM=30;
 		this.color="red";
 		this.y_velocity=6;
+		this.kill_value=75;
 		this.warm_counter=0;
+		this.sprite=new Sprite("kamikaze",32,32);
 	}
 
 	shootBullet(){

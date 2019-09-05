@@ -1,11 +1,12 @@
 
 class Game{
-	constructor(){
+	constructor(player_num){
 		this.world={
 			score:0,
 			width:600,
 			height:600,
 			map_speed:1,
+			player_count:player_num || 1,
 			boss:new Array(),
 			bossActive:false,
 			bombs:new Array(),
@@ -15,18 +16,20 @@ class Game{
 			kamikaze:new Array(),
 			airEnemies:new Array(),
 			consumables:new Array(),
-			player:new Player(350,500),
-			background_color:"rgb(0,0,0)",
 			groundEnemies:new Array(),
+			background_color:"rgb(0,0,0)",
+			players:[new Player(150,500,1),new Player(450,500,2)],
 
 			collideKamikaze:function(){
 				this.kamikaze.forEach(function(enemy,index){
-					if((enemy.x+enemy.width>=player.x) && (enemy.x<=player.x+player.width) && (enemy.y+enemy.height>=player.y) && (enemy.y<=player.y+player.height)){
-						enemy.health=0;
-						player.y+=5;
-						player.kamikazeDamage();
+					for(var i=0;i<this.player_count;i++){
+						if((enemy.x+enemy.width>=players[i].x) && (enemy.x<=players[i].x+players[i].width) && (enemy.y+enemy.height>=players[i].y) && (enemy.y<=players[i].y+players[i].height)){
+							enemy.health=0;
+							players[i].y+=5;
+							players[i].kamikazeDamage();
+						}
 					}
-				})
+				}.bind(this))
 				this.kamikaze=this.kamikaze.filter(function(enemy,index){
 					return (enemy.health>0);
 				})
@@ -34,10 +37,12 @@ class Game{
 
 			consumeItems:function(){
 				this.consumables.forEach(function(item,index){
-					if((item.x+item.width>=player.x) && (item.x<=player.x+player.width) && (item.y+item.height>=player.y) && (item.y<=player.y+player.height)){
-						item.consume(player);
+					for(var i=0;i<this.player_count;i++){
+						if((item.x+item.width>=players[i].x) && (item.x<=players[i].x+players[i].width) && (item.y+item.height>=players[i].y) && (item.y<=players[i].y+players[i].height)){
+							item.consume(players[i]);
+						}
 					}
-				})
+				}.bind(this))
 				this.consumables=this.consumables.filter(function(item,index){
 					return (!item.consumed);
 				})
@@ -89,10 +94,13 @@ class Game{
 						}
 					}.bind(this));
 				}
-				if(((bullet.y>this.player.y) && bullet.y<(this.player.y+this.player.height)) && (bullet.x<=(this.player.x+this.player.width) && (bullet.x>=this.player.x))) {
-					this.removeBullet(bullet);
-					this.player.bulletDamage();
+				for(var i=0;i<this.player_count;i++){
+					if(((bullet.y>this.players[i].y) && bullet.y<(this.players[i].y+this.players[i].height)) && (bullet.x<=(this.players[i].x+this.players[i].width) && (bullet.x>=this.players[i].x))) {
+						this.removeBullet(bullet);
+						this.players[i].bulletDamage();
+					}
 				}
+
 			},
 
 			triggerBullet:function(x,y,direction,isTurrent,doubleDamage,sniperShot){
@@ -105,8 +113,16 @@ class Game{
 					}
 					var bullet=new Bullet(x,y,direction,isTurrent,0,doubleDamage,sniper);
 				}else{
-					var dx=x-(player.x+player.width/2);
-					var dy=y-(player.y+player.width/2);
+					var dx=99999;
+					var dy=99999;
+					for(var i=0;i<this.player_count;i++){
+						var temp_x=x-(players[i].x+players[i].width/2);
+						var temp_y=y-(players[i].y+players[i].width/2);
+						if(temp_x<dx){
+							dx=temp_x;
+							dy=temp_y;
+						}
+					}
 					var angle=Math.atan2(dy,dx) - Math.PI;
 					var bullet=new Bullet(x,y,direction,isTurrent,angle,false,sniper);
 				}
@@ -152,9 +168,12 @@ class Game{
 					if(enemy.spreadShot){
 						enemy.shootBullet();
 					}else{
-						if((Math.abs(enemy.x-this.player.x)<=this.player.width) && (enemy.y<this.player.y)){
-							enemy.shootBullet();
+						for(var i=0;i<this.player_count;i++){
+							if((Math.abs(enemy.x-this.players[i].x)<=this.players[i].width) && (enemy.y<this.players[i].y)){
+								enemy.shootBullet();
+							}
 						}
+
 					}
 
 					let shift=this.getRandomMoveShift(enemy);
@@ -196,8 +215,10 @@ class Game{
 					fire.y+=this.map_speed;
 				}.bind(this))
 				this.kamikaze.forEach(function(enemy,index){
-					if((Math.abs(enemy.x-this.player.x)<=this.player.width) && (enemy.y<this.player.y)){
-						enemy.shootBullet();
+					for(var i=0;i<this.player_count;i++){
+						if((Math.abs(enemy.x-this.players[i].x)<=this.players[i].width) && (enemy.y<this.players[i].y)){
+							enemy.shootBullet();
+						}
 					}
 					enemy.move();
 				}.bind(this))
@@ -205,8 +226,9 @@ class Game{
 
 			getRandomMoveShift:function(enemy){
 				let shift=[];
-				if(Math.abs(enemy.x-this.player.x)>500){
-					if(enemy.x>this.player.x){
+
+				if(Math.abs(enemy.x-this.players[0].x)>400){
+					if(enemy.x>this.players[0].x){
 						shift.push(-1);
 					}
 					else{
@@ -219,10 +241,11 @@ class Game{
 						shift.push(Math.floor(Math.random() * 2)-1);
 					}
 				}
-				if(enemy.y>=(this.player.y-25)){
+
+				if(enemy.y>=(this.players[0].y-25)){
 					shift.push(-1);
 				}
-				else if(enemy.y<=this.player.y-400){
+				else if(enemy.y<=this.players[0].y-400){
 					shift.push(1);
 				}
 				else{
@@ -254,7 +277,7 @@ class Game{
 					if(enemy.health<=0){
 						this.generateConsumables(0.9,enemy.x,enemy.y);
 					}
-					if(enemy.health<=0 && this.player.sniper_enable==false){
+					if(enemy.health<=0 && this.players[0].sniper_enable==false){
 						this.player.sniper_enable=true;
 						if(!this.player.armor_enable){
 							message_enabled=true;
@@ -277,6 +300,11 @@ class Game{
 				this.groundEnemies=this.groundEnemies.filter(function(turrent,index){
 					return(turrent.y+turrent.height<this.height+50);
 				}.bind(this));
+				this.players.forEach(function(player,index){
+					if(player.health<=0){
+						player.x=-500;
+					}
+				})
 
 			},
 
@@ -294,7 +322,7 @@ class Game{
 
 			generateBoss(){
 				var armored_boss=false;
-				if(player.sniper_enable){
+				if(players[0].sniper_enable){
 					armored_boss=true;
 				}
 				this.boss.push(new Boss(250,-1000,armored_boss));
@@ -356,7 +384,9 @@ class Game{
 
 			tickGunTimer:function(){
 
-				this.player.TickWarm();
+				for(var i=0;i<this.player_count;i++){
+					this.players[i].TickWarm();
+				}
 				this.airEnemies.forEach(function(enemy,index){
 					enemy.TickWarm();
 				})
@@ -442,7 +472,9 @@ class Game{
 			},
 
 			update:function(){
-				this.collideObject(this.player);
+				for(var i=0;i<this.player_count;i++){
+					this.collideObject(this.players[i]);
+				}
 				this.collideKamikaze();
 				this.enemyControls();
 				this.bulletControls();

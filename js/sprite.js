@@ -8,7 +8,10 @@ class Sprite{
       case "Player":
         this.frame.src="img/player.png";
         break;
-      case "Enemy":
+        case "Player2":
+          this.frame.src="img/player2.png";
+          break;
+        case "Enemy":
         this.frame.src="img/enemy.png";
         break;
       case "Enemy_hit":

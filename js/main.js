@@ -3,18 +3,18 @@ var frame_rate=1000/30;
 
 var display= new Display(canvas);
 
-var game = new Game();
+var game = new Game(1);
 
-var player=game.world.player;
+var players=game.world.players;
 
 var controller = new Controller();
 
 var sound= new Sound();
 
-function startNewGame(){
+function startNewGame(num_of_players){
 	display = new Display(canvas);
-	game= new Game();
-	player= game.world.player;
+	game= new Game(num_of_players);
+	players= game.world.players;
 	controller=new Controller();
 }
 
@@ -78,17 +78,23 @@ function renderPlayer(){
 	// if(player.armor_enable && player.armor>0){
 	// 	display.drawRectangle(player.x-10,player.y-10,player.width+20,player.height+20,player.armor_color);
 	// }
-	player.sprite.render(display.ctx,player.x,player.y);
+	for(var i=0;i<game.world.player_count;i++){
+		players[i].sprite.render(display.ctx,players[i].x,players[i].y);
+	}
 }
 
 function renderStatus(){
-	if(player.health>0){
-		display.showText("Health : " + player.health,430,20);
-		display.showText("Score : " + game.world.score,430,45);
-		display.showText("Bomb : " + game.world.player.NUM_OF_BOMBS,430,65);
-	}else{
-		display.showText("Player Dead",480,20);
+	for(var i=0;i<game.world.player_count;i++){
+		var x=30;
+		if(players[i].health>0){
+			display.showText("Health : " + players[i].health,i*400+30,20);
+			display.showText("Score : " + game.world.score,i*400+30,45);
+			display.showText("Bomb : " + game.world.players[i].NUM_OF_BOMBS,i*400+30,65);
+		}else{
+			display.showText("Player Dead",i*400+30,20);
+		}
 	}
+
 }
 
 message_time=150;
@@ -127,8 +133,14 @@ var render=function(){
 }
 
 var update=function(){
-
-	if(game.world.player.health<=0){
+	var all_dead=false;
+	var player_num=game.world.player_count;
+	if(player_num==1 && players[0].health<=0){
+		all_dead=true;
+	}else if(player_num==2 && players[1].health<=0 && players[0].health<=0){
+		all_dead=true;
+	}
+	if(all_dead){
 			var highScore=JSON.parse(localStorage.getItem('highScores')) || [0,0,0,0,0] ;
 			highScore=highScore.sort(function(a,b){return (a-b);});
 			if (game.world.score>=highScore[0]){
@@ -139,27 +151,49 @@ var update=function(){
         }
         highScore=JSON.parse(localStorage.getItem('highScores'));
 			engine.game_start=false;
+			engine.screen=5;
 			display.deadScreen(highScore,game.world.score);
 	}
 
 	if(controller.left.active){
-		player.sprite.update(-1);
-		player.moveLeft();
+		players[0].sprite.update(-1);
+		players[0].moveLeft();
 	}
 	if(controller.right.active){
-		player.sprite.update(1);
-		player.moveRight();
+		players[0].sprite.update(1);
+		players[0].moveRight();
 	}
 	if(controller.up.active){
-		player.moveUp();
+		players[0].moveUp();
 	}
 	if(controller.down.active){
-		player.moveDown();
+		players[0].moveDown();
 	}
 	if(!(controller.left.active || controller.right.active || controller.up.active || controller.down.active)){
-		console.log("Player Idle");
-		player.sprite.stayIdle();
+		// console.log("Player Idle");
+		players[0].sprite.stayIdle();
 	}
+
+if(players.length==2){
+	if(controller.left2.active){
+		players[1].sprite.update(-1);
+		players[1].moveLeft();
+	}
+	if(controller.right2.active){
+		players[1].sprite.update(1);
+		players[1].moveRight();
+	}
+	if(controller.up2.active){
+		players[1].moveUp();
+	}
+	if(controller.down2.active){
+		players[1].moveDown();
+	}
+	if(!(controller.left2.active || controller.right2.active || controller.up2.active || controller.down2.active)){
+		// console.log("Player Idle");
+		players[1].sprite.stayIdle();
+	}
+}
 
 	game.update();
 }

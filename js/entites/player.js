@@ -1,6 +1,6 @@
 
 class Player extends Moveable{
-	constructor(x,y){
+	constructor(x,y,num){
 		super(x,y);
 		this.IDLE_Width=32;
 		this.IDLE_Height=32;
@@ -27,7 +27,11 @@ class Player extends Moveable{
 		this.height=this.IDLE_Height;
 		this.doubleDamageEnable=false;
 		this.doubleBulletEnable=false;
-		this.sprite=new animatedSprite("Player",32,32);
+		if(num==2){
+			this.sprite=new animatedSprite("Player2",32,32);
+		}else{
+			this.sprite=new animatedSprite("Player",32,32);
+		}
 	}
 
 	doubleDamage(){

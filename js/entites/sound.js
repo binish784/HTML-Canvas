@@ -1,10 +1,11 @@
 class Sound{
 	constructor(){
 		this.enemy_gun=new Audio('resources/sounds/gun.wav');
+		this.sniper_gun=new Audio('resources/sounds/sniper.wav');
 		this.player_gun=new Audio('resources/sounds/player-gun.wav');
 		this.turrent_gun=new Audio('resources/sounds/explosion.wav');
-		this.sniper_gun=new Audio('resources/sounds/sniper.wav');
 		this.kamikazeCollision=new Audio('resources/sounds/kamikaze-collision.wav');
+		this.bombExplosion=new Audio('resources/sounds/Bomb-Explosion.mp3');
 	}
 	get(effect){
 		switch(effect){
@@ -23,6 +24,8 @@ class Sound{
 			case "kamikaze-collision":
 				return(this.kamikazeCollision);
 				break;
+			case "bomb-explosion":
+				return(this.bombExplosion);
 		}
 	}
 

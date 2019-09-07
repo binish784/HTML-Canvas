@@ -1,7 +1,9 @@
 class Sprite{
-  constructor(obj,w,h){
+  constructor(obj,w,h,d_height,d_width){
     this.width=w;
     this.height=h;
+    this.d_width=d_width || w;
+    this.d_height=d_height || h;
     this.frame=new Image();
     this.currentFrame=0;
     switch (obj) {
@@ -25,6 +27,12 @@ class Sprite{
         break;
       case "boss":
         this.frame.src="img/boss.png";
+        break;
+      case "bomb":
+        this.frame.src="img/bomb.png";
+        break;
+      case "explosion":
+        this.frame.src="img/explosion.png";
         break;
       }
     }

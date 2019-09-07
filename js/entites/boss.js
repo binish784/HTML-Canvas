@@ -40,13 +40,15 @@ class Boss extends Moveable{
 			}
 		}
 		if(this.rifle_warm_counter==0){
-			if((player.x+player.width)>this.x && (this.x+this.width)>player.x){
-				game.world.triggerBullet(this.x+this.width/4,this.y+this.height+2,false,false,true);
-				game.world.triggerBullet(this.x+this.width/4+this.width/2,this.y+this.height+2,false,false,true);
-				this.sound=sound.get("player").cloneNode();
-				this.sound.volume=0.05;
-				this.sound.play();
-				this.rifle_warm_counter=this.RIFLE_GUN_WARM;
+			for(var i=0;i<game.world.player_count;i++){
+				if((players[i].x+players[i].width)>this.x && (this.x+this.width)>players[i].x){
+					game.world.triggerBullet(this.x+this.width/4,this.y+this.height+2,false,false,true);
+					game.world.triggerBullet(this.x+this.width/4+this.width/2,this.y+this.height+2,false,false,true);
+					this.sound=sound.get("player").cloneNode();
+					this.sound.volume=0.05;
+					this.sound.play();
+					this.rifle_warm_counter=this.RIFLE_GUN_WARM;
+				}
 			}
 		}
 		if(this.sniper_warm_counter<50){

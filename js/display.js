@@ -65,6 +65,19 @@ class Display{
 		this.ctx.fillText("(The Control Scheme has been changed)",150,450);
 	}
 
+	helpScreen(){
+		this.ctx.fillStyle="black";
+		this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
+		this.ctx.fillStyle='red';
+		this.ctx.font="30px Comic Sans MS";
+		this.ctx.fillText("Hints",150,200);
+		this.ctx.fillStyle='white';
+		this.ctx.font="15px Comic Sans MS";
+		this.ctx.fillText("Kamikaze Divers are dangerous, But have higher chances of drops",150,250);
+		this.ctx.fillText("2 Player",150,300);
+		this.ctx.fillText("Press 'space' to Start",200,350);
+	}
+
 	selectScreen(){
 		this.ctx.fillStyle="black";
 		this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);

@@ -6,7 +6,6 @@ class Game{
 			width:600,
 			height:600,
 			map_speed:1,
-			player_count:player_num || 1,
 			boss:new Array(),
 			bossActive:false,
 			bombs:new Array(),
@@ -17,6 +16,7 @@ class Game{
 			airEnemies:new Array(),
 			consumables:new Array(),
 			groundEnemies:new Array(),
+			player_count:player_num || 1,
 			background_color:"rgb(0,0,0)",
 			players:[new Player(150,500,1),new Player(450,500,2)],
 
@@ -97,6 +97,7 @@ class Game{
 				for(var i=0;i<this.player_count;i++){
 					if(((bullet.y>this.players[i].y) && bullet.y<(this.players[i].y+this.players[i].height)) && (bullet.x<=(this.players[i].x+this.players[i].width) && (bullet.x>=this.players[i].x))) {
 						this.removeBullet(bullet);
+						bullet.damage(this.players[i]);
 						this.players[i].bulletDamage();
 					}
 				}
@@ -141,6 +142,7 @@ class Game{
 				this.bombs=this.bombs.filter(function(val,ind){
 					return(index!=ind);
 				});
+				fire.sound.play();
 				this.fires.push(fire);
 				this.groundEnemies=this.groundEnemies.filter(function(enemy,index){
 						if(((enemy.x+enemy.width)>=(fire.x) &&
@@ -164,7 +166,6 @@ class Game{
 
 			enemyControls:function(){
 				this.airEnemies.forEach(function(enemy,index){
-
 					if(enemy.spreadShot){
 						enemy.shootBullet();
 					}else{
@@ -278,10 +279,12 @@ class Game{
 						this.generateConsumables(0.9,enemy.x,enemy.y);
 					}
 					if(enemy.health<=0 && this.players[0].sniper_enable==false){
-						this.player.sniper_enable=true;
-						if(!this.player.armor_enable){
+						for(var i=0;i<this.player_count;i++){
+							this.players[i].sniper_enable=true;
+						}
+						if(!this.players[0].armor_enable){
 							message_enabled=true;
-							message="Sniper Enabled - 'x' to shoot ";
+							message="Sniper Enabled - '?/d' to shoot ";
 						}
 					}
 					return (enemy.health>0);
@@ -455,7 +458,7 @@ class Game{
 			},
 
 			generateEnemies:function(){
-				if((this.score%8000)<500 && this.score>=8000 && this.boss.length==0){
+				if((this.score%6000)<500 && this.score>=6000 && this.boss.length==0){
 					this.bossActive=true;
 				}
 				if(this.bossActive){

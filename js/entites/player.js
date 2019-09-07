@@ -11,7 +11,7 @@ class Player extends Moveable{
 		this.player=true;
 		this.hitCounter=0;
 		this.warm_counter=0;
-		this.NUM_OF_BOMBS=5;
+		this.NUM_OF_BOMBS=20;
 		this.leftMove=false;
 		this.color="#45ff01";
 		this.sound=undefined;
@@ -127,9 +127,7 @@ class Player extends Moveable{
 	bulletDamage(){
 		if(this.armor>0){
 			this.armor_color="#ff4646";
-			this.armor-=10;
 		}else{
-			this.health-=10;
 			this.color="#DDEE11";
 		}
 		this.hit=true;

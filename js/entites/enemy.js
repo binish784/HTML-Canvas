@@ -61,7 +61,6 @@ class Enemy extends Moveable{
 		}
 	}
 	bulletDamage(){
-		this.health-=10;
 		this.hit=true;
 		this.sprite=new animatedSprite("Enemy_hit",32,32);
 		console.log(this.sprite);

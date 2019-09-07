@@ -20,7 +20,8 @@ function startNewGame(num_of_players){
 
 function renderBombs(){
 	game.world.bombs.forEach(function(bomb,index){
-		display.drawRectangle(bomb.x,bomb.y,bomb.width,bomb.height,bomb.color);
+		// display.drawRectangle(bomb.x,bomb.y,bomb.width,bomb.height,bomb.color);
+		bomb.sprite.render(display.ctx,bomb.x,bomb.y);
 		bomb.bombTick();
 		if(bomb.timer==0){
 			console.log("Explosion");
@@ -31,7 +32,8 @@ function renderBombs(){
 
 function renderFires(){
 	game.world.fires.forEach(function(fire,index){
-		display.drawRectangle(fire.x,fire.y,fire.width,fire.height,fire.color);
+		// display.drawRectangle(fire.x,fire.y,fire.width,fire.height,fire.color);
+		fire.sprite.render(display.ctx,fire.x,fire.y);
 		fire.fireTick();
 		if(fire.timer==0){
 			console.log("Exhaust Fire " +index);
@@ -87,17 +89,16 @@ function renderStatus(){
 	for(var i=0;i<game.world.player_count;i++){
 		var x=30;
 		if(players[i].health>0){
-			display.showText("Health : " + players[i].health,i*400+30,20);
-			display.showText("Score : " + game.world.score,i*400+30,45);
-			display.showText("Bomb : " + game.world.players[i].NUM_OF_BOMBS,i*400+30,65);
+			display.showText("Health : " + players[i].health,i*400+30,30);
+			display.showText("Bomb : " + game.world.players[i].NUM_OF_BOMBS,i*400+30,60);
 		}else{
-			display.showText("Player Dead",i*400+30,20);
+			display.showText("Player Dead",i*400+30,30);
 		}
 	}
-
+	display.showText("Score : " + game.world.score,250,30);
 }
 
-message_time=150;
+message_time=250;
 message="";
 message_enabled=false;
 function renderMessage(){

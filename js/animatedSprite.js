@@ -1,8 +1,8 @@
 class animatedSprite extends Sprite{
-  constructor(obj,w,h,frame_idle){
-    super(obj,w,h);
+  constructor(obj,w,h,frame_idle,total_frames,d_height,d_width){
+    super(obj,w,h,d_height,d_width);
     this.frametick=0;
-    this.totalFrame=5;
+    this.totalFrame=total_frames || 5;
     this.frameCount=10;
     this.idleFrame=frame_idle || 2;
     this.currentFrame=frame_idle || 2;
@@ -34,7 +34,7 @@ class animatedSprite extends Sprite{
   }
 
   render(ctx,x,y){
-    ctx.drawImage(this.frame,this.width*this.currentFrame,0,this.width,this.height,x,y,this.width,this.height);
+    ctx.drawImage(this.frame,this.width*this.currentFrame,0,this.width,this.height,x,y,this.d_width,this.d_height);
   }
 
 }

@@ -13,15 +13,16 @@ class Turrent{
 		this.sound=undefined;
 		this.direction=false;
 		this.turrentShot=true;
+		this.sprite=new Sprite("turrent",34,22);
 		this.warm_counter=Math.floor(Math.random()*(Math.floor(300)-Math.ceil(30))+Math.ceil(30));
 	}
 
 	shootBullet(){
 		if(this.warm_counter==0){
 			if(this.direction){
-				game.world.triggerBullet(this.x-2,this.y+(this.height/2),this.direction,this.turrentShot);
+				game.world.triggerBullet(this.x+this.width/2,this.y+(this.height/2),this.direction,this.turrentShot);
 			}else{
-				game.world.triggerBullet(this.x+2,this.y+(this.height/2),this.direction,this.turrentShot);
+				game.world.triggerBullet(this.x+this.width/2,this.y+(this.height/2),this.direction,this.turrentShot);
 			}
 			this.ammo--;
 			if(this.ammo==0){

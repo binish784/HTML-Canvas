@@ -37,6 +37,9 @@ class Sprite{
       case "background":
         this.frame.src="img/background.png";
         break;
+      case "turrent":
+        this.frame.src="img/turrent_gun.png";
+        break;
       }
     }
     render(ctx,x,y){

@@ -16,6 +16,7 @@ class Controller{
 	handleKeyDownUp(event){
 		var down=false;
 		if(event.type=='keydown'){
+			console.log(event.keyCode)
 			down=true;
 			if(engine.screen==0){
 				// && event.keyCode==32

@@ -72,7 +72,26 @@ function renderAirEnemies(){
 
 function renderGroundEnemies(){
 	game.world.groundEnemies.forEach(function(enemy,index){
-		display.drawRectangle(enemy.x,enemy.y,enemy.width,enemy.height,enemy.color);
+		var dx=99999;
+		var dy=99999;
+		for(var i=0;i<game.world.player_count;i++){
+			var temp_x=enemy.x-(players[i].x+players[i].width/2);
+			var temp_y=enemy.y-(players[i].y+players[i].width/2);
+			if(temp_x<dx){
+				dx=temp_x;
+				dy=temp_y;
+			}
+		}
+		var angle=Math.atan2(dy,dx) - Math.PI;
+		display.ctx.save();
+		console.log(enemy.x);
+		display.ctx.translate(enemy.x + enemy.width/2,enemy.y+enemy.height/2);
+		display.ctx.rotate(angle);
+
+		// display.drawRectangle(-(enemy.width/2),-(enemy.height/2),enemy.width,enemy.height,enemy.color);
+		enemy.sprite.render(display.ctx,-(enemy.width/2),-(enemy.height/2));
+		display.ctx.translate(-(enemy.x + enemy.width/2),-(enemy.y+enemy.height/2));
+		display.ctx.restore();
 	})
 }
 

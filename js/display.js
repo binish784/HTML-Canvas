@@ -1,6 +1,8 @@
 class Display{
 	constructor(canvas){
 		this.canvas=canvas;
+		this.backgrounds=[new Sprite("background",600,600),new Sprite("background",600,600)];
+		this.back_y=0;
 		this.canvas.style.backgroundColor="black";
 		this.ctx=this.canvas.getContext("2d");
 		console.log("Display Initialized");
@@ -29,6 +31,16 @@ class Display{
 		// this.ctx.fillRect(Math.floor(x+width-5),Math.floor(y+height+15),5,15);
 		// this.ctx.fillRect(Math.floor(x+width),Math.floor(y+height+20),5,15);
 	}
+
+	drawBackground(){
+		this.backgrounds[0].render(this.ctx,0,this.back_y);
+		this.back_y+=game.world.map_speed;
+		this.backgrounds[1].render(this.ctx,0,-600+this.back_y);
+		if(this.back_y==600){
+			this.back_y=0;
+		}
+	}
+
 
 	drawPlayer(x,y,width,height,color){
 		this.ctx.fillStyle="#76ff69";

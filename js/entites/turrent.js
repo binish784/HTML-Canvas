@@ -9,7 +9,7 @@ class Turrent{
 		this.total_ammo=5;
 		this.kill_value=75;
 		this.reloadTime=200;
-		this.color="#ff8c08";
+		this.color="#f8f906";
 		this.sound=undefined;
 		this.direction=false;
 		this.turrentShot=true;

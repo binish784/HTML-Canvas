@@ -117,7 +117,8 @@ function renderConsumables(){
 }
 
 var render=function(){
-	display.fill(game.world.background_color);
+	display.drawBackground();
+	// display.fill(game.world.background_color);
 	renderStatus();
 	if(game.world.fires.length>0){
 		renderFires();

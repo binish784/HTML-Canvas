@@ -10,7 +10,7 @@ class powerUps{
 		this.x_velocity=(Math.random()<0.5) ? -4 : 4;
 		this.y_velocity=(Math.random()>0.5) ? -2 : 2;
 	}
-	
+
 	tickLife(){
 		this.life--;
 	}
@@ -31,7 +31,7 @@ class powerUps{
 class doubleDamage extends powerUps{
 	constructor(x,y){
 		super(x,y);
-		this.color="#63acff";
+		this.color="red";
 	}
 	consume(playerObj){
 		this.consumed=true;
@@ -61,4 +61,3 @@ class doubleBullet extends powerUps{
 		playerObj.doubleBullet();
 	}
 }
-

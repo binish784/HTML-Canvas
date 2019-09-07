@@ -25,13 +25,14 @@ class Bullet{
 		this.sniper_shot=sniper_shot || false;
 		this.isTurrent=isTurrent || false;
 		if(doubleDamage){
-			this.color=	"#63acff";
+			this.color=	"red";
 		}else if(sniper_shot){
 			this.color="red";
 		}else{
 			this.color="#FFFFFF";
 		}
 	}
+
 	moveForward(){
 		if(this.direction){
 			this.y-=this.speed;
@@ -39,12 +40,14 @@ class Bullet{
 			this.y+=this.speed;
 		}
 	}
+
 	fromTurrent(){
 		if(this.isTurrent){
 			this.y += Math.sin(this.angle)*this.speed;
 		    this.x += Math.cos(this.angle)*this.speed;
 		}
 	}
+
 	damage(object){
 		if(this.doubleDamage){
 			object.health-=40;

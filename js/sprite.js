@@ -34,6 +34,9 @@ class Sprite{
       case "explosion":
         this.frame.src="img/explosion.png";
         break;
+      case "background":
+        this.frame.src="img/background.png";
+        break;
       }
     }
     render(ctx,x,y){

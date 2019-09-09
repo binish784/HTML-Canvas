@@ -59,10 +59,15 @@ class Bullet{
 			}
 		}else{
 			if(object.player){
-				object.health-=10;
+				if(object.armor_enable && object.armor>0){
+					object.armor-=10;
+				}else{
+					object.health-=10;
+				}
 			}else{
 				object.health-=20;
 			}
 		}
 	}
+
 }

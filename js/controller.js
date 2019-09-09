@@ -14,9 +14,9 @@ class Controller{
 	}
 
 	handleKeyDownUp(event){
+		console.log(event.keyCode)
 		var down=false;
 		if(event.type=='keydown'){
-			console.log(event.keyCode)
 			down=true;
 			if(engine.screen==0){
 				// && event.keyCode==32
@@ -77,10 +77,10 @@ class Controller{
 		}
 
 		switch(event.keyCode){
-			case 104:this.up.getInput(down);break;
-			case 101:this.down.getInput(down);break;
-			case 100:this.left.getInput(down);break;
-			case 102:this.right.getInput(down);break;
+			case 38:this.up.getInput(down);break;
+			case 40:this.down.getInput(down);break;
+			case 37:this.left.getInput(down);break;
+			case 39:this.right.getInput(down);break;
 			case 190:game.world.players[0].shootBullet();break;
 		 	case 191:game.world.players[0].sniperShot();break;
 

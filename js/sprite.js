@@ -10,10 +10,10 @@ class Sprite{
       case "Player":
         this.frame.src="img/player.png";
         break;
-        case "Player2":
-          this.frame.src="img/player2.png";
-          break;
-        case "Enemy":
+      case "Player2":
+        this.frame.src="img/player2.png";
+        break;
+      case "Enemy":
         this.frame.src="img/enemy.png";
         break;
       case "Enemy_hit":
@@ -39,6 +39,21 @@ class Sprite{
         break;
       case "turrent":
         this.frame.src="img/turrent_gun.png";
+        break;
+      case "health":
+        this.frame.src="img/heart.png";
+        break;
+      case "double_damage":
+        this.frame.src="img/doubleDamage.png";
+        break;
+      case "double_bullet":
+        this.frame.src="img/doubleBullet.png";
+        break;
+      case "bomb_consume":
+        this.frame.src="img/bomb_consume.png";
+        break;
+      case "armor_consume":
+        this.frame.src="img/armor_consume.png";
         break;
       }
     }

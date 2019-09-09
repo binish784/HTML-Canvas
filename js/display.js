@@ -13,6 +13,13 @@ class Display{
 		this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
 	}
 
+	drawArc(x,y,r,color){
+		this.ctx.strokeStyle=color;
+		this.ctx.beginPath();
+		this.ctx.arc(x,y,r,0,180);
+		this.ctx.stroke();
+	}
+
 	drawRectangle(x,y,width,height,color){
 			this.ctx.fillStyle=color;
 			this.ctx.fillRect(Math.floor(x),Math.floor(y),width,height);
@@ -40,7 +47,6 @@ class Display{
 			this.back_y=0;
 		}
 	}
-
 
 	drawPlayer(x,y,width,height,color){
 		this.ctx.fillStyle="#76ff69";
@@ -113,7 +119,7 @@ class Display{
 		this.ctx.font="15px Comic Sans MS";
 		this.ctx.fillText("1 Player",250,250);
 		this.ctx.fillText("Movement - ",100,300);
-		this.ctx.fillText("8, 5, 4, 6 (Number Pad)",200,300);
+		this.ctx.fillText("Arrow Keys",200,300);
 		this.ctx.fillText("Shoot - Press > ",100,350);
 		this.ctx.fillText("Bomb - Press <",250,350);
 		this.ctx.fillText("2 Player",250,400);
@@ -148,4 +154,5 @@ class Display{
 		}
 		this.ctx.fillText("Press 'space' to restart",200,500);
 	}
+
 }

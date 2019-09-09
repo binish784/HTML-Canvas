@@ -313,12 +313,17 @@ class Game{
 
 			generateConsumables(freq,x,y){
 				if(Math.random()<=freq){
-					if(Math.random()<=0.2){
+					var ran=Math.random()*100;
+					if(ran<=20){
 						this.consumables.push(new doubleDamage(x,y));
-					}else if(Math.random()<=0.7){
+					}else if(ran<=50){
 						this.consumables.push(new healthPower(x,y));
-					}else {
+					}else if(ran<=70){
 						this.consumables.push(new doubleBullet(x,y));
+					}else if(ran<=85){
+						this.consumables.push(new bombConsume(x,y));
+					}else{
+						this.consumables.push(new armorConsume(x,y));
 					}
 				}
 			},

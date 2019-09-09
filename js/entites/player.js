@@ -5,7 +5,7 @@ class Player extends Moveable{
 		this.IDLE_Width=32;
 		this.IDLE_Height=32;
 		this.hit=false;
-		this.armor=	0;
+		this.armor=	100;
 		this.health=100;
 		this.GUN_WARM=5;
 		this.player=true;
@@ -16,7 +16,7 @@ class Player extends Moveable{
 		this.color="#45ff01";
 		this.sound=undefined;
 		this.turrentShot=false;
-		this.armor_enable=false;
+		this.armor_enable=true;
 		this.doubleBulletTimer=0;
 		this.doubleDamageTimer=0;
 		this.SNIPER_GUN_WARM=500;
@@ -139,6 +139,18 @@ class Player extends Moveable{
 		this.hitCounter=10;
 		this.color="#ffdbdb";
 		this.health=100;
+	}
+
+	addBombs(){
+		if(this.NUM_OF_BOMBS<30){
+			this.NUM_OF_BOMBS+=5;
+		}
+	}
+
+	addArmor(){
+		if(this.armor_enable){
+			this.armor=100;
+		}
 	}
 
 }

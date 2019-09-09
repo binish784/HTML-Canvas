@@ -31,7 +31,7 @@ class powerUps{
 class doubleDamage extends powerUps{
 	constructor(x,y){
 		super(x,y);
-		this.color="red";
+		this.sprite=new Sprite("double_damage",20,20);
 	}
 	consume(playerObj){
 		this.consumed=true;
@@ -42,7 +42,7 @@ class doubleDamage extends powerUps{
 class healthPower extends powerUps{
 	constructor(x,y){
 		super(x,y);
-		this.color="#ffdbdb";
+		this.sprite=new Sprite("health",20,20);
 	}
 
 	consume(playerObj){
@@ -51,10 +51,35 @@ class healthPower extends powerUps{
 	}
 }
 
+class bombConsume extends powerUps{
+	constructor(x,y){
+		super(x,y);
+		this.sprite=new Sprite("bomb_consume",20,20);
+	}
+
+	consume(playerObj){
+		this.consumed=true;
+		playerObj.addBombs();
+	}
+}
+
+class armorConsume extends powerUps{
+	constructor(x,y){
+		super(x,y);
+		this.sprite=new Sprite("armor_consume",20,20);
+	}
+
+	consume(playerObj){
+		this.consumed=true;
+		playerObj.addArmor();
+	}
+}
+
+
 class doubleBullet extends powerUps{
 	constructor(x,y){
 		super(x,y);
-		this.color="#b050ff";
+		this.sprite=new Sprite("double_bullet",20,20);
 	}
 	consume(playerObj){
 		this.consumed=true;

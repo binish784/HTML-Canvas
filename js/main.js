@@ -53,9 +53,10 @@ function renderBullets(){
 
 function renderBoss(){
 	game.world.boss.forEach(function(enemy,index){
-		// if(enemy.armor_enable){
-		// 	display.drawRectangle(enemy.x-10,enemy.y-10,enemy.width+20,enemy.height+20,enemy.armor_color);
-		// }
+		if(enemy.armor_enable){
+			// display.drawRectangle(enemy.x-10,enemy.y-10,enemy.width+20,enemy.height+20,enemy.armor_color);
+			display.drawArc((enemy.x+enemy.width/2),enemy.y+enemy.height/2,Math.ceil((enemy.width+enemy.height)/2),enemy.armor_color);
+		}
 		// display.drawRectangle(enemy.x,enemy.y,enemy.width,enemy.height,enemy.color);
 		enemy.sprite.render(display.ctx,enemy.x,enemy.y);
 	})
@@ -84,7 +85,6 @@ function renderGroundEnemies(){
 		}
 		var angle=Math.atan2(dy,dx) - Math.PI;
 		display.ctx.save();
-		console.log(enemy.x);
 		display.ctx.translate(enemy.x + enemy.width/2,enemy.y+enemy.height/2);
 		display.ctx.rotate(angle);
 
@@ -96,9 +96,12 @@ function renderGroundEnemies(){
 }
 
 function renderPlayer(){
-	// if(player.armor_enable && player.armor>0){
-	// 	display.drawRectangle(player.x-10,player.y-10,player.width+20,player.height+20,player.armor_color);
-	// }
+	for(var i=0;i<game.world.player_count;i++){
+		if(players[i].armor_enable && players[i].armor>0){
+			display.drawArc((players[i].x+players[i].width/2),players[i].y+players[i].height/2,Math.ceil((players[i].width+players[i].height)/2),players[i].armor_color);
+		}
+	}
+
 	for(var i=0;i<game.world.player_count;i++){
 		players[i].sprite.render(display.ctx,players[i].x,players[i].y);
 	}
@@ -110,6 +113,9 @@ function renderStatus(){
 		if(players[i].health>0){
 			display.showText("Health : " + players[i].health,i*400+30,30);
 			display.showText("Bomb : " + game.world.players[i].NUM_OF_BOMBS,i*400+30,60);
+			if(players[i].armor>0){
+				display.showText("Armor : " + game.world.players[i].armor,i*400+30,90);
+			}
 		}else{
 			display.showText("Player Dead",i*400+30,30);
 		}
@@ -131,7 +137,7 @@ function renderMessage(){
 
 function renderConsumables(){
 	game.world.consumables.forEach(function(item,index){
-		display.drawRectangle(item.x,item.y,item.width,item.height,item.color);
+		item.sprite.render(display.ctx,item.x,item.y);
 	})
 }
 

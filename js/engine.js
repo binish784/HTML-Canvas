@@ -76,7 +76,6 @@ class Engine{
 				}
 				break;
 			case 2:
-				console.log("2");
 				display.controlScreen();
 				break;
 		}

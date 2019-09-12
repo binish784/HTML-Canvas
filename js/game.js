@@ -95,7 +95,7 @@ class Game{
 					}.bind(this));
 				}
 				for(var i=0;i<this.player_count;i++){
-					if(((bullet.y>this.players[i].y) && bullet.y<(this.players[i].y+this.players[i].height)) && (bullet.x<=(this.players[i].x+this.players[i].width) && (bullet.x>=this.players[i].x))) {
+					if(!bullet.direction && ((bullet.y>this.players[i].y) && bullet.y<(this.players[i].y+this.players[i].height)) && (bullet.x<=(this.players[i].x+this.players[i].width) && (bullet.x>=this.players[i].x))) {
 						this.removeBullet(bullet);
 						bullet.damage(this.players[i]);
 						this.players[i].bulletDamage();
@@ -305,7 +305,7 @@ class Game{
 				}.bind(this));
 				this.players.forEach(function(player,index){
 					if(player.health<=0){
-						player.x=-500;
+						player.x=-2500;
 					}
 				})
 
@@ -492,7 +492,6 @@ class Game{
 				this.moveConsumables();
 				this.generateEnemies();
 			},
-
 
 		};
 

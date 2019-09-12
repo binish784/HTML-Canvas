@@ -3,8 +3,16 @@
  content: "";
  display:table;
 }
+
+body{
+  background-color: black;
+}
 canvas{
- float: left;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 .info{
  float: left;

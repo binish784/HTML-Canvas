@@ -1,6 +1,11 @@
 var canvas=document.querySelector("canvas");
 var frame_rate=1000/30;
 
+
+var start_background=new Image();
+start_background.src="img/startScreen.jpg";
+
+
 var display= new Display(canvas);
 
 var game = new Game(1);
@@ -10,6 +15,7 @@ var players=game.world.players;
 var controller = new Controller();
 
 var sound= new Sound();
+
 
 function startNewGame(num_of_players){
 	display = new Display(canvas);
@@ -236,4 +242,5 @@ window.addEventListener("keyup",function(event){
 
 var engine = new Engine(frame_rate,render,update);
 
+engine.start();
 engine.start();

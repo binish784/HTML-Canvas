@@ -14,7 +14,6 @@ class Controller{
 	}
 
 	handleKeyDownUp(event){
-		console.log(event.keyCode)
 		var down=false;
 		if(event.type=='keydown'){
 			down=true;

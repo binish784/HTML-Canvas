@@ -69,11 +69,14 @@ class Display{
 	}
 
 	startScreen(){
-		this.ctx.fillStyle="black";
+		this.ctx.drawImage(start_background,0,0,600,600,0,0,600,600);
+		this.ctx.fillStyle="#000000a8";
 		this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
-		this.ctx.fillStyle='red';
-		this.ctx.font="30px Comic Sans MS";
-		this.ctx.fillText("Welcome to 'The Game'",150,200);
+		// this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
+		// this.ctx.fillStyle="black";
+		this.ctx.fillStyle='Yellow';
+		this.ctx.font="30px Arial";
+		this.ctx.fillText("Welcome to AERO-RUN",120,200);
 		this.ctx.fillStyle='white';
 		this.ctx.font="15px Comic Sans MS";
 		this.ctx.fillText("Start Game",200,250);
@@ -99,9 +102,9 @@ class Display{
 	selectScreen(){
 		this.ctx.fillStyle="black";
 		this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
-		this.ctx.fillStyle='red';
-		this.ctx.font="30px Comic Sans MS";
-		this.ctx.fillText("Select Number of Players",150,200);
+		this.ctx.fillStyle='yellow';
+		this.ctx.font="30px Arial";
+		this.ctx.fillText("Select Number of Players",120,200);
 		this.ctx.fillStyle='white';
 		this.ctx.font="15px Comic Sans MS";
 		this.ctx.fillText("1 Player",250,250);
@@ -112,22 +115,22 @@ class Display{
 	controlScreen(){
 		this.ctx.fillStyle="black";
 		this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
-		this.ctx.fillStyle='red';
-		this.ctx.font="30px Comic Sans MS";
-		this.ctx.fillText("Player Controls",150,200);
+		this.ctx.fillStyle='yellow';
+		this.ctx.font="30px Arial";
+		this.ctx.fillText("Player Controls",150,150);
 		this.ctx.fillStyle='white';
 		this.ctx.font="15px Comic Sans MS";
-		this.ctx.fillText("1 Player",250,250);
-		this.ctx.fillText("Movement - ",100,300);
-		this.ctx.fillText("Arrow Keys",200,300);
-		this.ctx.fillText("Shoot - Press > ",100,350);
-		this.ctx.fillText("Bomb - Press <",250,350);
-		this.ctx.fillText("2 Player",250,400);
-		this.ctx.fillText("Movement - ",100,450);
-		this.ctx.fillText("U, J, H, K",200,450);
-		this.ctx.fillText("Shoot - Press S ",100,500);
-		this.ctx.fillText("Bomb - Press A",250,500);
-		this.ctx.fillText("Press 'space' to Back",200,550);
+		this.ctx.fillText("Player-1",50,200);
+		this.ctx.fillText("Movement - ",0,250);
+		this.ctx.fillText("Arrow Keys",100,250);
+		this.ctx.fillText("Shoot - Press > ",0,300);
+		this.ctx.fillText("Bomb - Press <",0,350);
+		this.ctx.fillText("Player-2",350,200);
+		this.ctx.fillText("Movement - ",300,250);
+		this.ctx.fillText("U, J, H, K",400,250);
+		this.ctx.fillText("Shoot - Press S ",300,300);
+		this.ctx.fillText("Bomb - Press A",300,350);
+		this.ctx.fillText("Press 'space' to Back",160,450);
 		// this.ctx.fillText("2 Player",350,250);
 		// this.ctx.fillText("Press 'space' to go Back",200,350);
 	}
@@ -137,7 +140,7 @@ class Display{
 		this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
 		this.ctx.fillStyle='red';
 		this.ctx.font="30px Comic Sans MS";
-		this.ctx.fillText("Salute to the Dead",150,200);
+		this.ctx.fillText("Game over",220,200);
 		this.ctx.fillStyle='white';
 		this.ctx.font="15px Comic Sans MS";
 		this.ctx.fillText("High Score : " + scores[scores.length-1],230,250);

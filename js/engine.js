@@ -3,7 +3,7 @@ class Engine{
 	constructor(frame_rate,update,render){
 		this.screen=0;
 		this.now_time=0;
-		this.last_time=0;
+		this.last_time=undefined;
 		this.player_num=1;
 		this.start_option=0;
 		this.update=update;
@@ -37,7 +37,8 @@ class Engine{
 				this.run();
 			}.bind(this));
 			this.last_time=this.now;
-
+		}else{
+			this.handleScreen();
 		}
 	}
 
@@ -49,42 +50,47 @@ class Engine{
 		}
 	}
 
-	start(){
-		this.last_time=this.getTimestamp();
+	handleScreen(){
 		switch(this.screen){
 			case 0:
 				display.startScreen();
-				switch (this.start_option) {
-					case 0:
-						display.drawRectangle(180,240,10,10,"blue");
-						break;
-					case 1:
-						display.drawRectangle(180,290,10,10,"blue");
-						break;
-					case 2:
-						display.drawRectangle(180,340,10,10,"blue");
-						break;
-				}
+				switch(this.start_option) {
+						case 0:
+							game.world.players[0].sprite.render(display.ctx,150,230);
+							// display.drawRectangle(180,240,10,10,"blue");
+							break;
+						case 1:
+							game.world.players[0].sprite.render(display.ctx,150,280);
+							break;
+						case 2:
+							game.world.players[0].sprite.render(display.ctx,150,330);
+							break;
+					}
 				break;
 			case 1:
 				display.selectScreen();
 				if(this.player_num==1){
-					display.drawRectangle(220,240,10,10,"blue");
+					game.world.players[0].sprite.render(display.ctx,200,230);
 				}else{
-					display.drawRectangle(220,290,10,10,"green");
-					display.drawRectangle(200,290,10,10,"blue");
+					game.world.players[0].sprite.render(display.ctx,150,280);
+					game.world.players[1].sprite.render(display.ctx,200,280);
+					// display.drawRectangle(220,290,10,10,"green");
+					// display.drawRectangle(200,290,10,10,"blue");
 				}
 				break;
 			case 2:
 				display.controlScreen();
 				break;
 		}
-			if(this.game_start){
-				this.animator=window.requestAnimationFrame(function(){
-					this.run();
-				}.bind(this));
-			}
-		}
+
+	}
+
+	start(){
+		this.last_time=this.getTimestamp();
+		this.animator=window.requestAnimationFrame(function(){
+			this.run();
+		}.bind(this));
+	}
 
 	stop(){
 		if(window.cancelAnimationFrame(this.animator)){
